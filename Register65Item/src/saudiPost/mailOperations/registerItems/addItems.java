@@ -53,6 +53,7 @@ public class addItems {
 	}
 	public void setItemDetails (boolean itemDirection, String itemType, String itemWeight, String orgNo , int startItemNOCellNo , int itemsCount) throws IOException
 	{
+		///////
 		WebElement inputInternal = browserDriver.findElement(By.id("Internal"));
 		WebElement inputExternal = browserDriver.findElement(By.id("External"));
 		WebElement itemTypeCombo = browserDriver.findElement(By.id("select2-itemType-container"));		
