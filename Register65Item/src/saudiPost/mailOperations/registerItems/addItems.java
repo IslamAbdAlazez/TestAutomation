@@ -1,5 +1,7 @@
 package saudiPost.mailOperations.registerItems;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +10,7 @@ import java.io.IOException;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -17,7 +20,7 @@ import saudiPost.mailOperations.registerItems.*;
 public class addItems {
 
 	static WebDriver browserDriver ;
-	
+	static saudiPost.mailOperations.registerItems.general genCls = new general();
 
 	public void setSender(String mainCorpName,String subCorpName) 
 	{
@@ -57,12 +60,7 @@ public class addItems {
 		WebElement orgCode = browserDriver.findElement(By.id("OriginalCode"));
 		WebElement repeatOriginalCodeChk = browserDriver.findElement(By.id("repeatOriginalCode"));
 		WebElement itemNO = browserDriver.findElement(By.id("packageno"));
-		//Reading items NOs from Excel
-				File srcFile = new File("C:\\Users\\islam.ARCOM\\Desktop\\ItemNOs.xlsx");
-				FileInputStream fis = new FileInputStream(srcFile);
-				XSSFWorkbook wb = new XSSFWorkbook(fis);
-				XSSFSheet sheet;
-				sheet = wb.getSheetAt(0);
+		List<String> curCellsVals = new ArrayList<String>();
 			    
 				int endItemNO = startItemNOCellNo+itemsCount; 
 				// Adding the data to itemNo text box
@@ -87,9 +85,8 @@ public class addItems {
 			repeatOriginalCodeChk.click();
 		}	
 		//////////
-		String curCellVal = sheet.getRow(i).getCell(3).getStringCellValue();
-				itemNO.sendKeys(curCellVal);
-				wb.close();	
+		curCellsVals = genCls.readExcelCollumn("C:\\Users\\islam.ARCOM\\Desktop\\ItemNOs.xlsx", 0, i, 3,itemsCount); /*sheet.getRow(i).getCell(3).getStringCellValue();*/
+				//itemNO.sendKeys(toString(curCellsVals[i]));
 				itemNO.sendKeys(Keys.ENTER);
 				try {
 					Thread.sleep(2000);
@@ -110,10 +107,13 @@ public class addItems {
 			return false;
 		}
 	}
+		
 	public static void main(String[] args) {		
-		saudiPost.mailOperations.registerItems.general genCls = new general();
+		
 		addItems regItemObj = new addItems();
-		browserDriver= genCls.main(args);
+		String[] browserName = new String[1];
+		browserName[0]="firefox";
+		browserDriver= genCls.main(browserName);
 		genCls.invokeBrowser();
 		genCls.login("mosimi","P@ssw0rd");
 		genCls.openPage("«·⁄„·Ì«  «·»—ÌœÌ…, ”ÃÌ· «·»⁄«∆À","”ÃÌ· »⁄ÌÀ…");
@@ -121,11 +121,13 @@ public class addItems {
 			regItemObj.setSender("Ê“«—… «·⁄„·", "œÌÊ«‰ Ê“«—… «·⁄„·");
 		}
 		try {
-			regItemObj.setItemDetails(true, "ÊÀ«∆ﬁ", "100", "Islam",240,2);
+			regItemObj.setItemDetails(true, "ÊÀ«∆ﬁ", "100", "Islam",375,5);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		String statementNo = genCls.createStatement("456321",false,true);
+		
 	}
 
 }

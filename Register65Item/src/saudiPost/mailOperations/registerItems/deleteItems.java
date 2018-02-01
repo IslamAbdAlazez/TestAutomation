@@ -46,7 +46,9 @@ public class deleteItems {
 		// TODO Auto-generated method stub
 		general genCls = new general();
 		deleteItems delItems = new deleteItems();
-		browserDriver= genCls.main(args);
+		String[] browserName = new String[1];
+		browserName[0]="firefox";
+		browserDriver= genCls.main(browserName);
 		genCls.invokeBrowser();
 		genCls.login("mosimi","P@ssw0rd");
 		genCls.openPage("ÇáÚãáíÇÊ ÇáÈÑíÏíÉ,ÊÓÌíá ÇáÈÚÇÆË","ÓÌíá ÈÚíËÉ");
