@@ -20,7 +20,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 public class general {
 	
 	static WebDriver browserDriver ;
-	XSSFWorkbook wb;
+	
 
 	public void openPage(String fullPathCommaDele, String pageName) 
 	{
@@ -68,24 +68,28 @@ public class general {
 		//browserDriver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
 	}	
 	
-	public XSSFWorkbook initializeExcel(String fileFullPath) throws IOException {
+	/*public XSSFWorkbook initializeExcel(String fileFullPath) throws IOException {
 		//Prepairing to use Excel
 		File srcFile = new File(fileFullPath);
 		FileInputStream fis = new FileInputStream(srcFile);
-		this.wb = new XSSFWorkbook(fis);		
+		wb = new XSSFWorkbook(fis);		
 		return wb;
-	}
+	}*/
 	
 	public List<String> readExcelCollumn(String fileFullPath, int sheetIndex,int rowIndex,int cellIndex, int cellsCount) throws IOException {
 		//XSSFSheet sheet;
 		//sheet = wb.getSheetAt(sheetIndex);
-		wb = this.initializeExcel(fileFullPath);
+		File srcFile = new File(fileFullPath);
+		FileInputStream fis = new FileInputStream(srcFile);
+		XSSFWorkbook wb = new XSSFWorkbook(fis);		
+		
+		//wb = this.initializeExcel(fileFullPath);
 		List<String> cellsValues = new ArrayList<String>();
 		for (int i = rowIndex; i < cellsCount; i++) {
 			cellsValues.add(wb.getSheetAt(sheetIndex).getRow(rowIndex).getCell(cellIndex).getStringCellValue());
-		}
-		
+		}		
 		wb.close();
+		fis.close();
 		return cellsValues;
 	}
 	
