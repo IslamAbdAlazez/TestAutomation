@@ -87,7 +87,7 @@ public class addItems {
 		}	
 		//////////
 		curCellsVals = genCls.readExcelCollumn("E:\\Selenium\\ItemNOs.xlsx", 0, i, 3,itemsCount); /*sheet.getRow(i).getCell(3).getStringCellValue();*/
-				//itemNO.sendKeys(toString(curCellsVals[i]));
+				itemNO.sendKeys(curCellsVals.get(i).toString());
 				itemNO.sendKeys(Keys.ENTER);
 				try {
 					Thread.sleep(2000);
@@ -122,7 +122,7 @@ public class addItems {
 			regItemObj.setSender("Ê“«—… «·⁄„·", "œÌÊ«‰ Ê“«—… «·⁄„·");
 		}
 		try {
-			regItemObj.setItemDetails(true, "ÊÀ«∆ﬁ", "100", "Islam",375,5);
+			regItemObj.setItemDetails(true, "ÊÀ«∆ﬁ", "100", "Islam",380,65);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
