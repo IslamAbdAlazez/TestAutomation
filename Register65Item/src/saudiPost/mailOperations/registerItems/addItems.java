@@ -86,7 +86,7 @@ public class addItems {
 			repeatOriginalCodeChk.click();
 		}	
 		//////////
-		curCellsVals = genCls.readExcelCollumn("C:\\Users\\islam.ARCOM\\Desktop\\ItemNOs.xlsx", 0, i, 3,itemsCount); /*sheet.getRow(i).getCell(3).getStringCellValue();*/
+		curCellsVals = genCls.readExcelCollumn("E:\\Selenium\\ItemNOs.xlsx", 0, i, 3,itemsCount); /*sheet.getRow(i).getCell(3).getStringCellValue();*/
 				//itemNO.sendKeys(toString(curCellsVals[i]));
 				itemNO.sendKeys(Keys.ENTER);
 				try {

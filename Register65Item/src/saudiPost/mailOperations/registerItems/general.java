@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
@@ -129,7 +128,7 @@ public class general {
 			break;
 		case "firefox":
 			// for Firefox
-			System.setProperty("webdriver.gecko.driver", "E:\\Selenium\\geckodriver-v0.19.1-win64\\geckodriver.exe");
+			System.setProperty("webdriver.gecko.driver", "E:\\Selenium\\geckodriver.exe");
 			browserDriver= new FirefoxDriver();
 			break;
 		default:
