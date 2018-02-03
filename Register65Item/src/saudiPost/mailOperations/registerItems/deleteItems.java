@@ -47,7 +47,7 @@ public class deleteItems {
 		general genCls = new general();
 		deleteItems delItems = new deleteItems();
 		String[] browserName = new String[1];
-		browserName[0]="firefox";
+		browserName[0]="chrome";
 		browserDriver= genCls.main(browserName);
 		genCls.invokeBrowser();
 		genCls.login("mosimi","P@ssw0rd");

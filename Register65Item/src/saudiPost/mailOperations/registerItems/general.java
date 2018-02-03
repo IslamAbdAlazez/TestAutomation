@@ -123,13 +123,13 @@ public class general {
 		switch (browserName) {
 		// for Chrome
 		case "chrome":			
-			System.setProperty("webdriver.chrome.driver", "C:\\Users\\islam.ARCOM\\Downloads\\Compressed\\chromedriver_win32\\chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", "E:\\Selenium\\chromedriver.exe");
 			browserDriver= new ChromeDriver();
 			browserDriver.manage().window().maximize();
 			break;
 		case "firefox":
 			// for Firefox
-			System.setProperty("webdriver.gecko.driver", "C:\\Users\\islam.ARCOM\\Downloads\\Compressed\\geckodriver-v0.19.1-win64\\geckodriver.exe");
+			System.setProperty("webdriver.gecko.driver", "E:\\Selenium\\geckodriver-v0.19.1-win64\\geckodriver.exe");
 			browserDriver= new FirefoxDriver();
 			break;
 		default:
