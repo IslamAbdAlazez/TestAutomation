@@ -2,20 +2,11 @@ package saudiPost.mailOperations.registerItems;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import saudiPost.mailOperations.registerItems.*;
 
 public class addItems {
 
@@ -35,7 +26,7 @@ public class addItems {
 		WebElement gehaSub = browserDriver.findElement(By.id("select2-subCorporateCustomers-container"));
 		gehaSub.click();
 		try {
-			Thread.sleep(7000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -52,8 +43,7 @@ public class addItems {
 		}*/		
 	}
 	public void setItemDetails (boolean itemDirection, String itemType, String itemWeight, String orgNo , int startItemNOCellNo , int itemsCount) throws IOException
-	{
-		///////
+	{		
 		WebElement inputInternal = browserDriver.findElement(By.id("Internal"));
 		WebElement inputExternal = browserDriver.findElement(By.id("External"));
 		WebElement itemTypeCombo = browserDriver.findElement(By.id("select2-itemType-container"));		
@@ -64,7 +54,8 @@ public class addItems {
 		List<String> curCellsVals = new ArrayList<String>();
 			    
 				int endItemNO = startItemNOCellNo+itemsCount; 
-				// Adding the data to itemNo text box
+				curCellsVals = genCls.readExcelCollumn("E:\\Selenium\\ItemNOs.xlsx", 0, startItemNOCellNo, 3,endItemNO); /*sheet.getRow(i).getCell(3).getStringCellValue();*/
+				// Adding the item details
 				for (int i = startItemNOCellNo; i <endItemNO; i++) {
 		
 		if (itemDirection) 
@@ -85,9 +76,8 @@ public class addItems {
 		if (repeatOriginalCodeChk.isSelected()==false) {
 			repeatOriginalCodeChk.click();
 		}	
-		//////////
-		curCellsVals = genCls.readExcelCollumn("C:\\Users\\islam.ARCOM\\Desktop\\ItemNOs.xlsx", 0, i, 3,itemsCount); /*sheet.getRow(i).getCell(3).getStringCellValue();*/
-				itemNO.sendKeys(curCellsVals.get(i).toString());
+				
+				itemNO.sendKeys(curCellsVals.get(i-startItemNOCellNo).toString());
 				itemNO.sendKeys(Keys.ENTER);
 				try {
 					Thread.sleep(2000);
@@ -122,7 +112,7 @@ public class addItems {
 			regItemObj.setSender("æÒÇÑÉ ÇáÚãá", "ÏíæÇä æÒÇÑÉ ÇáÚãá");
 		}
 		try {
-			regItemObj.setItemDetails(true, "æËÇÆÞ", "100", "Islam",380,65);
+			regItemObj.setItemDetails(true, "æËÇÆÞ", "100", "Islam",520,10);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

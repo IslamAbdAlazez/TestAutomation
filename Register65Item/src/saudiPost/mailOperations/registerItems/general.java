@@ -1,13 +1,14 @@
 package saudiPost.mailOperations.registerItems;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -76,22 +77,23 @@ public class general {
 		return wb;
 	}*/
 	
-	public List<String> readExcelCollumn(String fileFullPath, int sheetIndex,int rowIndex,int cellIndex, int cellsCount) throws IOException {
+	public List<String> readExcelCollumn(String fileFullPath, int sheetIndex,int startRowIndex,int cellIndex, int endRowIndex) throws IOException {
 		//XSSFSheet sheet;
 		//sheet = wb.getSheetAt(sheetIndex);
 		File srcFile = new File(fileFullPath);
 		FileInputStream fis = new FileInputStream(srcFile);
-		XSSFWorkbook wb = new XSSFWorkbook(fis);		
-		
+		XSSFWorkbook wb = new XSSFWorkbook(fis);
 		//wb = this.initializeExcel(fileFullPath);
 		List<String> cellsValues = new ArrayList<String>();
-		for (int i = rowIndex; i < cellsCount; i++) {
-			cellsValues.add(wb.getSheetAt(sheetIndex).getRow(rowIndex).getCell(cellIndex).getStringCellValue());
+		for (int i = startRowIndex; i < endRowIndex; i++) {
+			cellsValues.add(wb.getSheetAt(sheetIndex).getRow(i).getCell(cellIndex).getStringCellValue());
 		}		
 		wb.close();
 		fis.close();
 		return cellsValues;
 	}
+	
+	// This method has been placed here in the general class because it will be called twice from register items page and from the create statement page
 	
 	public String createStatement(String mndoobId,boolean printOrNot, boolean pageSource /*true means this method will be invoked through register item page & false means this method will be invoked with in the create statement page */) {
 		if (pageSource) {
@@ -105,19 +107,41 @@ public class general {
 		}		
 		WebElement exportStatement = browserDriver.findElement(By.id("saveStatement"));
 		exportStatement.click();
-		browserDriver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		//browserDriver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
 		WebElement statementNoLbl = browserDriver.findElement(By.cssSelector("text[text-anchor='middle']"));
 		String statementNo = statementNoLbl.getText(); 
 		if (printOrNot) {
 			WebElement printBtn = browserDriver.findElement(By.id("PrintReport"));
 			((JavascriptExecutor)browserDriver).executeScript("arguments[0].click();", printBtn);
-			//printBtn.click();
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				Robot r = new Robot();
+				r.keyPress(KeyEvent.VK_ENTER);
+				r.keyRelease(KeyEvent.VK_ENTER);				
+			} catch (AWTException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			WebElement cancelBtn = browserDriver.findElement(By.cssSelector("button[class='btn btn-default none-printable closepopup']"));
+			((JavascriptExecutor)browserDriver).executeScript("arguments[0].click();", cancelBtn);
 		}
 		else {
 			WebElement cancelBtn = browserDriver.findElement(By.cssSelector("button[class='btn btn-default none-printable closepopup']"));
 			((JavascriptExecutor)browserDriver).executeScript("arguments[0].click();", cancelBtn);
 			//cancelBtn.click();
 		}
+		
 		return statementNo;
 	}
 	
