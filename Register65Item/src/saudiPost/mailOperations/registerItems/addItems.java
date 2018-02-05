@@ -54,7 +54,7 @@ public class addItems {
 		List<String> curCellsVals = new ArrayList<String>();
 			    
 				int endItemNO = startItemNOCellNo+itemsCount; 
-				curCellsVals = genCls.readExcelCollumn("E:\\Selenium\\ItemData.xlsx", 0, startItemNOCellNo, 3,endItemNO); /*sheet.getRow(i).getCell(3).getStringCellValue();*/
+				curCellsVals = genCls.readExcelCollumn("E:\\Selenium\\ItemsData.xlsx", 0, startItemNOCellNo, 3,endItemNO); /*sheet.getRow(i).getCell(3).getStringCellValue();*/
 				// Adding the item details
 				for (int i = startItemNOCellNo; i <endItemNO; i++) {
 		
