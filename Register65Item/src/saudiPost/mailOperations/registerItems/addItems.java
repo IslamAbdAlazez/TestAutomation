@@ -54,7 +54,7 @@ public class addItems {
 		List<String> curCellsVals = new ArrayList<String>();
 			    
 				int endItemNO = startItemNOCellNo+itemsCount; 
-				curCellsVals = genCls.readExcelCollumn("E:\\Selenium\\ItemNOs.xlsx", 0, startItemNOCellNo, 3,endItemNO); /*sheet.getRow(i).getCell(3).getStringCellValue();*/
+				curCellsVals = genCls.readExcelCollumn("E:\\Selenium\\ItemData.xlsx", 0, startItemNOCellNo, 3,endItemNO); /*sheet.getRow(i).getCell(3).getStringCellValue();*/
 				// Adding the item details
 				for (int i = startItemNOCellNo; i <endItemNO; i++) {
 		
@@ -112,12 +112,12 @@ public class addItems {
 			regItemObj.setSender("æÒÇÑÉ ÇáÚãá", "ÏíæÇä æÒÇÑÉ ÇáÚãá");
 		}
 		try {
-			regItemObj.setItemDetails(true, "æËÇÆÞ", "100", "Islam",520,10);
+			regItemObj.setItemDetails(true, "æËÇÆÞ", "100", "Islam",540,10);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String statementNo = genCls.createStatement("456321",false,true);
+		//String statementNo = genCls.createStatement("456321",false,true);
 		
 	}
 

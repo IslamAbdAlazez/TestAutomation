@@ -69,13 +69,25 @@ public class general {
 		//browserDriver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
 	}	
 	
-	/*public XSSFWorkbook initializeExcel(String fileFullPath) throws IOException {
-		//Prepairing to use Excel
-		File srcFile = new File(fileFullPath);
-		FileInputStream fis = new FileInputStream(srcFile);
-		wb = new XSSFWorkbook(fis);		
-		return wb;
-	}*/
+	public WebElement bringTableRow(String tableName, String itemId) {
+		JavascriptExecutor jse = (JavascriptExecutor)browserDriver;
+		jse.executeScript("window.scrollTo(0,document.body.scrollHeight)", "");
+		WebElement DataTable = browserDriver.findElement(By.id(tableName));
+		List<WebElement> TotalRowCount = DataTable.findElements(By.xpath("//*[@id='ItemsDataTable']/tbody/tr"));
+		int RowIndex=1;		
+		for (WebElement rowElement:TotalRowCount) {
+			List<WebElement> TotalColumnCount=rowElement.findElements(By.xpath("td"));
+			 int ColumnIndex=1;
+			 for (WebElement colElement:TotalColumnCount) {
+				if (colElement.getText().toLowerCase().equalsIgnoreCase(itemId.toLowerCase().trim()) ) {
+					return rowElement;
+				}
+				 ColumnIndex=ColumnIndex+1;
+			}
+			 RowIndex=RowIndex+1;
+		}
+		return null;
+	}
 	
 	public List<String> readExcelCollumn(String fileFullPath, int sheetIndex,int startRowIndex,int cellIndex, int endRowIndex) throws IOException {
 		//XSSFSheet sheet;

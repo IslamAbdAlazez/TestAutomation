@@ -1,19 +1,14 @@
 package saudiPost.mailOperations.registerItems;
-import java.util.List;
-
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.server.handler.FindElement;
 import org.openqa.selenium.support.ui.Select;
 import saudiPost.mailOperations.registerItems.general;
 
 public class deleteItems {
 
 	static WebDriver browserDriver ;
-	general genCls = new general();
+	static general genCls = new general();
 	public void deleteItems(int itemsCount) {
 		//WebElement mainCrp = browserDriver.findElement(By.xpath("//*[@id=\"RenderBody\"]/div[1]/div[2]/div/div[1]/span/span[1]/span")).findElement(By.id("select2-mainCorporateCustomers-container"));
 		// Check if sender can be selected
@@ -41,35 +36,52 @@ public class deleteItems {
 					break;
 				}
 			}			
-	}
+	}	
 	
-	private void deleteItem(String itemNo) {
+	public void deleteItem(String itemNo) {
 		
 		//WebElement ItemsDataTableBody = browserDriver.findElement(By.id("ItemsDataTable")).findElement(By.cssSelector("#ItemsDataTable > tbody:nth-child(3)"));
-		JavascriptExecutor jse = (JavascriptExecutor)browserDriver;
-		jse.executeScript("window.scrollBy(0,400)", "");
-		WebElement ItemsDataTable = browserDriver.findElement(By.id("ItemsDataTable"));
-		List<WebElement> TotalRowCount = ItemsDataTable.findElements(By.xpath("//*[@id='ItemsDataTable']/tbody/tr"));
-		int RowIndex=1;
-		for (WebElement rowElement:TotalRowCount) {
-			List<WebElement> TotalColumnCount=rowElement.findElements(By.xpath("td"));
-			 int ColumnIndex=1;
-			 for (WebElement colElement:TotalColumnCount) {
-				if (colElement.getText().toLowerCase().equalsIgnoreCase(itemNo.toLowerCase()) ) {
-					WebElement curDelBtn = rowElement.findElement(By.cssSelector("button[data-original-title='ÍÐÝ']")); 
-					curDelBtn.click();
-					WebElement okBtn = browserDriver.findElement(By.cssSelector(".ok"));
-					okBtn.click();
-				}
-				 ColumnIndex=ColumnIndex+1;
+		/*WebDriverWait uiWait = new WebDriverWait(browserDriver, 15);
+		uiWait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(By.id("ItemsDataTable"), By.cssSelector("button[data-original-title='ÍÐÝ']")));*/
+		WebElement currentRow ;
+		currentRow = genCls.bringTableRow("ItemsDataTable", itemNo);
+		if (currentRow !=null) {
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {				
+				e.printStackTrace();
 			}
-			 RowIndex=RowIndex+1;
+			WebElement curDelBtn = currentRow.findElement(By.cssSelector("button[data-original-title='ÍÐÝ']")); 
+			curDelBtn.click();
+			WebElement okBtn = browserDriver.findElement(By.cssSelector(".ok"));
+			okBtn.click();
+		}		
+	}
+	
+public void deleteSomeItems(String[] itemsNos) {
+				WebElement currentRow ;
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					
+					e.printStackTrace();
+				}
+		for (int i = 0; i < itemsNos.length; i++) {
+			currentRow = genCls.bringTableRow("ItemsDataTable", itemsNos[i].toString());
+			if (currentRow !=null) {
+				
+				WebElement curDelBtn = currentRow.findElement(By.cssSelector("button[data-original-title='ÍÐÝ']")); 
+				curDelBtn.click();
+				WebElement okBtn = browserDriver.findElement(By.cssSelector(".ok"));
+				okBtn.click();
+				currentRow = null;
+			}		
 		}
+	
 	}
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		general genCls = new general();
+				
 		deleteItems delItems = new deleteItems();
 		String[] browserName = new String[1];
 		browserName[0]="firefox";
@@ -77,8 +89,17 @@ public class deleteItems {
 		genCls.invokeBrowser();
 		genCls.login("mosimi","P@ssw0rd");
 		genCls.openPage("ÇáÚãáíÇÊ ÇáÈÑíÏíÉ,ÊÓÌíá ÇáÈÚÇÆË","ÓÌíá ÈÚíËÉ");
+		
+		// For deleting all items or some items from the beginning
 		//delItems.deleteItems(65);
-		delItems.deleteItem("O2783468777SA");
+		
+		//for deleting 1 Specific item 
+		//delItems.deleteItem("O1983010549SA");
+		
+		//for deleting some specific items
+		String[] itemsNos = new String[2]; /*You can modify this number to be the count of specific items You want to delete but make sure it is = the addition in the next line*/
+		itemsNos[0] = "O1983010547SA"; itemsNos[1] = "O1983010543SA";
+		delItems.deleteSomeItems(itemsNos);
 	}
 
 }
