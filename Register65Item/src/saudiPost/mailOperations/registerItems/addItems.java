@@ -3,16 +3,23 @@ package saudiPost.mailOperations.registerItems;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Pause;
 
 public class addItems {
 
 	static WebDriver browserDriver ;
 	static saudiPost.mailOperations.registerItems.general genCls = new general();
-
+	static DataFormatter formatter = new DataFormatter();
+	
 	public void setSender(String mainCorpName,String subCorpName) 
 	{
 		WebElement mainCrp = browserDriver.findElement(By.id("select2-mainCorporateCustomers-container"));
@@ -42,7 +49,7 @@ public class addItems {
 			}
 		}*/		
 	}
-	public void setItemDetails (boolean itemDirection, String itemType, String itemWeight, String orgNo , int startItemNOCellNo , int itemsCount) throws IOException
+	public void setItemDetails (/*boolean itemDirection, String itemType, String itemWeight, String orgNo ,*/ int startItemNOCellNo , int itemsCount) throws IOException
 	{		
 		WebElement inputInternal = browserDriver.findElement(By.id("Internal"));
 		WebElement inputExternal = browserDriver.findElement(By.id("External"));
@@ -51,14 +58,17 @@ public class addItems {
 		WebElement orgCode = browserDriver.findElement(By.id("OriginalCode"));
 		WebElement repeatOriginalCodeChk = browserDriver.findElement(By.id("repeatOriginalCode"));
 		WebElement itemNO = browserDriver.findElement(By.id("packageno"));
-		List<String> curCellsVals = new ArrayList<String>();
+		ArrayList<XSSFRow> excelRows = new ArrayList<XSSFRow>();
+		XSSFRow currentRow ;
 			    
 				int endItemNO = startItemNOCellNo+itemsCount; 
-				curCellsVals = genCls.readExcelCollumn("E:\\Selenium\\ItemsData.xlsx", 0, startItemNOCellNo, 3,endItemNO); /*sheet.getRow(i).getCell(3).getStringCellValue();*/
+				//curCellsVals = genCls.readExcelCollumn("E:\\Selenium\\ItemsData.xlsx", 0, 3,startItemNOCellNo, endItemNO); /*sheet.getRow(i).getCell(3).getStringCellValue();*/
+				excelRows.addAll(genCls.readExcelRows("E:\\Selenium\\ItemsData.xlsx", 0,startItemNOCellNo, endItemNO));
 				// Adding the item details
-				for (int i = startItemNOCellNo; i <endItemNO; i++) {
-		
-		if (itemDirection) 
+				for (int i = startItemNOCellNo; i <endItemNO; i++) {					
+					currentRow=(XSSFRow)excelRows.get(i-1);
+					
+		if (currentRow.getCell(4).getStringCellValue().trim().equals("ÏÇÎáí")) 
 		{
 			inputInternal.click();
 		}
@@ -67,17 +77,20 @@ public class addItems {
 		}
 		itemTypeCombo.click();
 		WebElement itemTypeComboSearch = browserDriver.findElement(By.className("select2-search__field"));
-		itemTypeComboSearch.sendKeys(itemType);
+		itemTypeComboSearch.sendKeys(currentRow.getCell(5).getStringCellValue().trim());
 		itemTypeComboSearch.sendKeys(Keys.ENTER);
-		itemWeightTextBox.sendKeys(itemWeight);
+		//String itemWeight = formatter.formatCellValue(currentRow.getCell(6));
+		XSSFCell itemWeightCell = currentRow.getCell(6);
+		itemWeightCell.setCellType(itemWeightCell.CELL_TYPE_STRING);
+		itemWeightTextBox.sendKeys(itemWeightCell.toString());
 		if (i == startItemNOCellNo) {
-			orgCode.sendKeys(orgNo);			
+			orgCode.sendKeys(currentRow.getCell(7).getStringCellValue().trim());			
 		}
 		if (repeatOriginalCodeChk.isSelected()==false) {
 			repeatOriginalCodeChk.click();
 		}	
 				
-				itemNO.sendKeys(curCellsVals.get(i-startItemNOCellNo).toString());
+				itemNO.sendKeys(currentRow.getCell(3).getStringCellValue());
 				itemNO.sendKeys(Keys.ENTER);
 				try {
 					Thread.sleep(2000);
@@ -85,6 +98,7 @@ public class addItems {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				currentRow=null;				
 		}		
 	}	
 	public boolean checkSenderStsatus() {
@@ -112,7 +126,7 @@ public class addItems {
 			regItemObj.setSender("æÒÇÑÉ ÇáÚãá", "ÏíæÇä æÒÇÑÉ ÇáÚãá");
 		}
 		try {
-			regItemObj.setItemDetails(true, "æËÇÆÞ", "100", "Islam",540,10);
+			regItemObj.setItemDetails(1,5);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

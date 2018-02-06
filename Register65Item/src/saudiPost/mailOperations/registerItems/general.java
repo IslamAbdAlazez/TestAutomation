@@ -5,10 +5,14 @@ import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -20,8 +24,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class general {
 	
-	static WebDriver browserDriver ;
-	
+	static WebDriver browserDriver ;	
 
 	public void openPage(String fullPathCommaDele, String pageName) 
 	{
@@ -37,7 +40,13 @@ public class general {
 		
 		WebElement pageLnk = browserDriver.findElement(By.partialLinkText(pageName));
 		pageLnk.click();
-		browserDriver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+		//browserDriver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void invokeBrowser() 
@@ -61,7 +70,7 @@ public class general {
 		pwdTxt.sendKeys(pass);
 		pwdTxt.sendKeys(Keys.ENTER);
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(30000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,20 +98,46 @@ public class general {
 		return null;
 	}
 	
-	public List<String> readExcelCollumn(String fileFullPath, int sheetIndex,int startRowIndex,int cellIndex, int endRowIndex) throws IOException {
-		//XSSFSheet sheet;
-		//sheet = wb.getSheetAt(sheetIndex);
+	public List<XSSFRow> readExcelRows(String fileFullPath, int sheetIndex,int startRowIndex, int endRowIndex) throws IOException {
+		
 		File srcFile = new File(fileFullPath);
 		FileInputStream fis = new FileInputStream(srcFile);
 		XSSFWorkbook wb = new XSSFWorkbook(fis);
-		//wb = this.initializeExcel(fileFullPath);
-		List<String> cellsValues = new ArrayList<String>();
+		List<XSSFRow> returnedRows = new ArrayList<XSSFRow>();
 		for (int i = startRowIndex; i < endRowIndex; i++) {
-			cellsValues.add(wb.getSheetAt(sheetIndex).getRow(i).getCell(cellIndex).getStringCellValue());
+			returnedRows.add(wb.getSheetAt(sheetIndex).getRow(i));
 		}		
 		wb.close();
 		fis.close();
-		return cellsValues;
+		return returnedRows;
+	}
+	
+	public XSSFRow findExcelRow(String fileFullPath, int sheetIndex,String itemNo) throws IOException {
+		File srcFile = new File(fileFullPath);
+		FileInputStream fis = new FileInputStream(srcFile);
+		XSSFWorkbook wb = new XSSFWorkbook(fis);
+		XSSFSheet currSheet = wb.getSheetAt(sheetIndex);
+		String itemNoCellVal;
+		for (int i = 1; i < currSheet.getPhysicalNumberOfRows()-1; i++) {
+			itemNoCellVal =currSheet.getRow(i).getCell(3).getStringCellValue().toLowerCase().trim(); 
+			if (itemNoCellVal.equals(itemNo.toLowerCase().trim()))/* NOW THE ROW IS FOUND*/ {
+				return currSheet.getRow(i);				
+			}
+			itemNoCellVal="";			
+		}	
+		return null;
+	}
+	
+	public ArrayList<String> readExcelRow(String fileFullPath, int sheetIndex,String itemNo) throws IOException {
+		XSSFRow currentRow = this.findExcelRow(fileFullPath, sheetIndex, itemNo);
+		if (currentRow!=null) {
+			ArrayList<String> returnRow = new ArrayList<String>();		
+				for (int j = 3; j < currentRow.getLastCellNum(); j++) {
+					returnRow.add(currentRow.getCell(j).getStringCellValue());
+				}					
+			return returnRow;
+		}
+		return null;
 	}
 	
 	// This method has been placed here in the general class because it will be called twice from register items page and from the create statement page
