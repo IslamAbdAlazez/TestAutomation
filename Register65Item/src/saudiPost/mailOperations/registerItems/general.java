@@ -1,6 +1,7 @@
 package saudiPost.mailOperations.registerItems;
 
 import java.awt.AWTException;
+import java.awt.RenderingHints.Key;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -21,6 +23,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
 
 public class general {
 	
@@ -79,6 +82,10 @@ public class general {
 	}	
 	
 	public WebElement bringTableRow(String tableName, String itemId) {
+		
+		browserDriver.findElement(By.cssSelector("span[aria-labelledby='select2-itemsLengthMenu-container']")).click();
+		browserDriver.findElement(By.className("select2-search__field")).sendKeys(Integer.toString(65));
+		browserDriver.findElement(By.className("select2-search__field")).sendKeys(Keys.ENTER);
 		JavascriptExecutor jse = (JavascriptExecutor)browserDriver;
 		jse.executeScript("window.scrollTo(0,document.body.scrollHeight)", "");
 		WebElement DataTable = browserDriver.findElement(By.id(tableName));
@@ -133,7 +140,15 @@ public class general {
 		if (currentRow!=null) {
 			ArrayList<String> returnRow = new ArrayList<String>();		
 				for (int j = 3; j < currentRow.getLastCellNum(); j++) {
-					returnRow.add(currentRow.getCell(j).getStringCellValue());
+					if (j ==7 || j==13 || j==15 || j==16||j==17 || j==18 || j==19 || j==20 || j==21 || j==22 || j==23) /* For excel columns that has formula*/ {
+						XSSFCell itemCell = currentRow.getCell(j);
+						if (itemCell !=null) {
+							itemCell.setCellType(itemCell.CELL_TYPE_STRING);							
+						}						
+					}
+					if (currentRow.getCell(j)!=null) {
+						returnRow.add(currentRow.getCell(j).getStringCellValue());
+					}					
 				}					
 			return returnRow;
 		}

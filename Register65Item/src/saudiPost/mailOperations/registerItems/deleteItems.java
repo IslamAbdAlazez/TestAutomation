@@ -1,4 +1,5 @@
 package saudiPost.mailOperations.registerItems;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,14 +25,14 @@ public class deleteItems {
 				currDelBtn.click();
 				//browserDriver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 				WebElement okBtn = browserDriver.findElement(By.cssSelector(".ok"));
-				okBtn.click();
-				//browserDriver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-			/*	try {
+				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/
+				}
+				okBtn.click();				
+			
 				if (browserDriver.findElements(By.className("dataTables_empty")).size() != 0) {
 					break;
 				}
@@ -91,15 +92,15 @@ public void deleteSomeItems(String[] itemsNos) {
 		genCls.openPage("«·⁄„·Ì«  «·»—ÌœÌ…, ”ÃÌ· «·»⁄«∆À","”ÃÌ· »⁄ÌÀ…");
 		
 		// For deleting all items or some items from the beginning
-		//delItems.deleteItems(65);
+		delItems.deleteItems(65);
 		
 		//for deleting 1 Specific item 
 		//delItems.deleteItem("O1983010549SA");
 		
 		//for deleting some specific items
-		String[] itemsNos = new String[2]; /*You can modify this number to be the count of specific items You want to delete but make sure it is = the addition in the next line*/
-		itemsNos[0] = "O1983010547SA"; itemsNos[1] = "O1983010543SA";
-		delItems.deleteSomeItems(itemsNos);
+		/*String[] itemsNos = new String[2]; /*You can modify this number to be the count of specific items You want to delete but make sure it is = the addition in the next line*/
+		/*itemsNos[0] = "O1983010547SA"; itemsNos[1] = "O1983010543SA";
+		delItems.deleteSomeItems(itemsNos);*/
 	}
 
 }
