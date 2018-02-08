@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -148,7 +147,10 @@ public class general {
 					}
 					if (currentRow.getCell(j)!=null) {
 						returnRow.add(currentRow.getCell(j).getStringCellValue());
-					}					
+					}
+					else {
+						returnRow.add("");
+					}
 				}					
 			return returnRow;
 		}

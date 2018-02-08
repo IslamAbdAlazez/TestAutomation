@@ -125,8 +125,8 @@ public class addItems {
 	}
 	
 	public void editItems(String[]itemsNos) throws InterruptedException  {
-		ArrayList currentExcelRow;
 		
+		ArrayList currentExcelRow;
 		for (int i = 0; i < itemsNos.length; i++) {
 			try {
 				currentExcelRow = genCls.readExcelRow("E:\\Selenium\\ItemsData.xltm", 0, itemsNos[i]);
@@ -134,14 +134,19 @@ public class addItems {
 				Thread.sleep(1000);
 				WebElement itemTypeCombo = browserDriver.findElement(By.cssSelector("span[aria-labelledby='select2-editItemTypes-container']"));
 				itemTypeCombo.click();
-				WebElement itemTypeComboText =  itemTypeCombo.findElement(By.id("select2-editItemTypes-container"));
+				WebElement itemTypeComboText =  itemTypeCombo.findElement(By.xpath("/html/body/span/span/span[1]/input"));
 				Thread.sleep(2000);
-				itemTypeComboText.sendKeys(currentExcelRow.get(6).toString());
-				browserDriver.findElement(By.id("editItemWeight")).sendKeys(currentExcelRow.get(7).toString());
-				browserDriver.findElement(By.id("editItemDescription")).sendKeys(currentExcelRow.get(4).toString());
+				itemTypeComboText.sendKeys(currentExcelRow.get(3).toString());
+				itemTypeComboText.sendKeys(Keys.ENTER);
+				browserDriver.findElement(By.id("editItemWeight")).clear();
+				browserDriver.findElement(By.id("editItemWeight")).sendKeys(currentExcelRow.get(4).toString());
+				if (currentExcelRow.get(1)!=null && currentExcelRow.get(1).toString() !="") {
+					browserDriver.findElement(By.id("editItemDescription")).clear();
+					browserDriver.findElement(By.id("editItemDescription")).sendKeys(currentExcelRow.get(1).toString());
+				}				
 				browserDriver.findElement(By.id("submitEditItemBtn")).click();
 				itemTypeCombo = null;
-				Thread.sleep(3000);
+				Thread.sleep(5000);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -169,7 +174,7 @@ public class addItems {
 		}*/
 		//String statementNo = genCls.createStatement("456321",false,true);
 		String [] itemsToEdit = new String[3];
-		itemsToEdit[0]="O1985010005SA"; itemsToEdit[1] = "O1985010007SA"; itemsToEdit[2] = "O1985010009SA";
+		itemsToEdit[0]="RO198510002SA"; itemsToEdit[1] = "RO198510004SA"; itemsToEdit[2] = "RO198510006SA";
 		try {
 			regItemObj.editItems(itemsToEdit);
 		} catch (InterruptedException e) {
