@@ -162,7 +162,7 @@ public class addItems {
 		browserDriver= genCls.main(browserName);
 		genCls.invokeBrowser();
 		genCls.login("mosimi","P@ssw0rd");
-		genCls.openPage("ÇáÚãáíÇÊ ÇáÈÑíÏíÉ,ÊÓÌíá ÇáÈÚÇÆË","ÓÌíá ÈÚíËÉ");
+		genCls.openPage("ÇáÚãáíÇÊ ÇáÈÑíÏíÉ,ÊÓÌíá ÇáÈÚÇÆË","Êßæíä ÈíÇä");
 		/*if(regItemObj.checkSenderStsatus()) {
 			regItemObj.setSender("æÒÇÑÉ ÇáÚãá", "ÏíæÇä æÒÇÑÉ ÇáÚãá");
 		}

@@ -37,48 +37,31 @@ public class deleteItems {
 					break;
 				}
 			}			
-	}	
-	
-	public void deleteItem(String itemNo) {
-		
-		//WebElement ItemsDataTableBody = browserDriver.findElement(By.id("ItemsDataTable")).findElement(By.cssSelector("#ItemsDataTable > tbody:nth-child(3)"));
-		/*WebDriverWait uiWait = new WebDriverWait(browserDriver, 15);
-		uiWait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(By.id("ItemsDataTable"), By.cssSelector("button[data-original-title='ÍÐÝ']")));*/
-		WebElement currentRow ;
-		currentRow = genCls.bringTableRow("ItemsDataTable", itemNo);
-		if (currentRow !=null) {
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {				
-				e.printStackTrace();
-			}
-			WebElement curDelBtn = currentRow.findElement(By.cssSelector("button[data-original-title='ÍÐÝ']")); 
-			curDelBtn.click();
-			WebElement okBtn = browserDriver.findElement(By.cssSelector(".ok"));
-			okBtn.click();
-		}		
 	}
 	
-public void deleteSomeItems(String[] itemsNos) {
+public void deleteSomeItems(String[] itemsNos , boolean [] delete, boolean pageSource) {
 				WebElement currentRow ;
 				try {
 					Thread.sleep(10000);
-				} catch (InterruptedException e) {
-					
+				} catch (InterruptedException e) {					
 					e.printStackTrace();
 				}
 		for (int i = 0; i < itemsNos.length; i++) {
 			currentRow = genCls.bringTableRow("ItemsDataTable", itemsNos[i].toString());
-			if (currentRow !=null) {
-				
+			if (currentRow !=null) {				
 				WebElement curDelBtn = currentRow.findElement(By.cssSelector("button[data-original-title='ÍÐÝ']")); 
 				curDelBtn.click();
-				WebElement okBtn = browserDriver.findElement(By.cssSelector(".ok"));
-				okBtn.click();
-				currentRow = null;
+				if (pageSource) {
+					WebElement okBtn = browserDriver.findElement(By.cssSelector(".ok"));
+					okBtn.click();
+					currentRow = null;
+				}
+				else {
+					///// 	HER I WILL BUT THE CODE THAT WILL CLICK ON DELETE PERMENTALLY OR DELETE FROM STATEMENT BUTTON
+					currentRow = null;
+				}
 			}		
-		}
-	
+		}	
 	}
 	
 	public static void main(String[] args) {
@@ -89,18 +72,17 @@ public void deleteSomeItems(String[] itemsNos) {
 		browserDriver= genCls.main(browserName);
 		genCls.invokeBrowser();
 		genCls.login("mosimi","P@ssw0rd");
-		genCls.openPage("ÇáÚãáíÇÊ ÇáÈÑíÏíÉ,ÊÓÌíá ÇáÈÚÇÆË","ÓÌíá ÈÚíËÉ");
+		genCls.openPage("ÇáÚãáíÇÊ ÇáÈÑíÏíÉ,ÊÓÌíá ÇáÈÚÇÆË","Êßæíä ÈíÇä");
 		
 		// For deleting all items or some items from the beginning
-		delItems.deleteItems(65);
-		
-		//for deleting 1 Specific item 
-		//delItems.deleteItem("O1983010549SA");
+		//delItems.deleteItems(65);
 		
 		//for deleting some specific items
-		/*String[] itemsNos = new String[2]; /*You can modify this number to be the count of specific items You want to delete but make sure it is = the addition in the next line*/
-		/*itemsNos[0] = "O1983010547SA"; itemsNos[1] = "O1983010543SA";
-		delItems.deleteSomeItems(itemsNos);*/
+		String[] itemsNos = new String[2]; /*You can modify this number to be the count of specific items You want to delete but make sure it is = the addition in the next line*/
+		itemsNos[0] = "RO198510002SA"; itemsNos[1] = "RO198510004SA";
+		boolean [] delete = new boolean[2]; // This array is used to identify that each of the items will be deleted perementaly or only deleted from the statement
+		delete[0] = true; delete[1] = false;
+		delItems.deleteSomeItems(itemsNos,delete,false /*True mean this page is invoked from register item page while false means this page is invoked from the create statement page*/);
 	}
 
 }
