@@ -85,23 +85,36 @@ public class general {
 		browserDriver.findElement(By.cssSelector("span[aria-labelledby='select2-itemsLengthMenu-container']")).click();
 		browserDriver.findElement(By.className("select2-search__field")).sendKeys(Integer.toString(65));
 		browserDriver.findElement(By.className("select2-search__field")).sendKeys(Keys.ENTER);
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		JavascriptExecutor jse = (JavascriptExecutor)browserDriver;
 		jse.executeScript("window.scrollTo(0,document.body.scrollHeight)", "");
 		WebElement DataTable = browserDriver.findElement(By.id(tableName));
 		List<WebElement> TotalRowCount = DataTable.findElements(By.xpath("//*[@id='ItemsDataTable']/tbody/tr"));
-		int RowIndex=1;		
-		for (WebElement rowElement:TotalRowCount) {
-			List<WebElement> TotalColumnCount=rowElement.findElements(By.xpath("td"));
-			 int ColumnIndex=1;
-			 for (WebElement colElement:TotalColumnCount) {
-				if (colElement.getText().toLowerCase().equalsIgnoreCase(itemId.toLowerCase().trim()) ) {
-					return rowElement;
+		
+		if (itemId !="") {
+			int RowIndex=1;		
+			for (WebElement rowElement:TotalRowCount) {
+				List<WebElement> TotalColumnCount=rowElement.findElements(By.xpath("td"));
+				 int ColumnIndex=1;
+				 for (WebElement colElement:TotalColumnCount) {
+					if (colElement.getText().toLowerCase().equalsIgnoreCase(itemId.toLowerCase().trim()) ) {
+						return rowElement;
+					}
+					 ColumnIndex=ColumnIndex+1;
 				}
-				 ColumnIndex=ColumnIndex+1;
+				 RowIndex=RowIndex+1;
 			}
-			 RowIndex=RowIndex+1;
+			return null;
 		}
-		return null;
+		else {
+			List<WebElement> tableRows = DataTable.findElements(By.tagName("tr"));
+			return tableRows.get(1);
+		}		
 	}
 	
 	public List<XSSFRow> readExcelRows(String fileFullPath, int sheetIndex,int startRowIndex, int endRowIndex) throws IOException {
