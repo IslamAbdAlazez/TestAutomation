@@ -1,18 +1,14 @@
 package saudiPost.mailOperations.registerItems;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.io.IOException;
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Pause;
 
 public class addItems {
 
@@ -60,14 +56,13 @@ public class addItems {
 		WebElement itemNO = browserDriver.findElement(By.id("packageno"));
 		WebElement itemDescBtn = browserDriver.findElement(By.id("addItemDescriptionBtn"));
 		ArrayList<XSSFRow> excelRows = new ArrayList<XSSFRow>();
-		XSSFRow currentRow ;
-			    
-				int endItemNO = startItemNOCellNo+itemsCount; 
-				//curCellsVals = genCls.readExcelCollumn("E:\\Selenium\\ItemsData.xltm", 0, 3,startItemNOCellNo, endItemNO); /*sheet.getRow(i).getCell(3).getStringCellValue();*/
-				excelRows.addAll(genCls.readExcelRows("E:\\Selenium\\ItemsData.xltm", 0,startItemNOCellNo, endItemNO));
-				// Adding the item details
-				for (int i = startItemNOCellNo; i <endItemNO; i++) {					
-					currentRow=(XSSFRow)excelRows.get(i-1);
+		XSSFRow currentRow ;			    
+		int endItemNO = startItemNOCellNo+itemsCount; 
+		//curCellsVals = genCls.readExcelCollumn("E:\\Selenium\\ItemsData.xltm", 0, 3,startItemNOCellNo, endItemNO); /*sheet.getRow(i).getCell(3).getStringCellValue();*/
+		excelRows.addAll(genCls.readExcelRows("E:\\Selenium\\ItemsData.xltm", 0,startItemNOCellNo, endItemNO));
+		// Adding the item details
+		for (int i = startItemNOCellNo; i <endItemNO; i++) {					
+			currentRow=(XSSFRow)excelRows.get(i-1);
 		if (currentRow.getCell(4)!=null && currentRow.getCell(4).getStringCellValue().trim()!="") {
 			itemDescBtn.click();
 			try {
@@ -180,8 +175,6 @@ public class addItems {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		}		
 	}
-
 }

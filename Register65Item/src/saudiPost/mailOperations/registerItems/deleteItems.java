@@ -37,7 +37,7 @@ public class deleteItems {
 					okBtn.click();
 				}
 				else {
-					///// 	HERE I WILL BUT THE CODE THAT WILL CLICK ON DELETE PERMENTALLY OR DELETE FROM STATEMENT BUTTON
+					
 					if (delPermOrFromStat) {
 						browserDriver.findElement(By.id("deleted")).click();						
 					}
@@ -111,8 +111,7 @@ public void deleteSomeItems(String[] itemsNos , boolean [] delete, boolean pageS
 		genCls.openPage("«·⁄„·Ì«  «·»—ÌœÌ…, ”ÃÌ· «·»⁄«∆À"," ﬂÊÌ‰ »Ì«‰");
 		
 		// For deleting all items or some items from the beginning
-		delItems.deleteItems(65,false,false);
-			
+		delItems.deleteItems(65,false,false);			
 		//for deleting some specific items
 		//String[] itemsNos = new String[2]; /*You can modify this number to be the count of specific items You want to delete but make sure it is = the addition in the next line*/
 		//itemsNos[0] = "O1985010007SA"; itemsNos[1] = "O1985010003SA";
@@ -120,5 +119,4 @@ public void deleteSomeItems(String[] itemsNos , boolean [] delete, boolean pageS
 		//delete[0] = true; delete[1] = false; delete[2] = true;
 		//delItems.deleteSomeItems(itemsNos,delete,true /*True mean this page is invoked from register item page while false means this page is invoked from the create statement page*/);
 	}
-
 }

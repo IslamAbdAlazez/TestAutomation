@@ -1,16 +1,17 @@
 package saudiPost.mailOperations.registerItems;
 
 import java.awt.AWTException;
-import java.awt.RenderingHints.Key;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+//import java.util.function.Predicate;
+import java.util.function.Predicate;
+
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -23,6 +24,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class general {
 	
@@ -38,17 +40,18 @@ public class general {
 			currPointer.click();
 			browserDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 			currPointerText="";
-		}		
-		
+		}
 		WebElement pageLnk = browserDriver.findElement(By.partialLinkText(pageName));
 		pageLnk.click();
 		//browserDriver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
-		try {
+		/*try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
+		new WebDriverWait(browserDriver, 30).until(
+		          webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
 	}
 	
 	public void invokeBrowser() 
@@ -71,13 +74,14 @@ public class general {
 		WebElement pwdTxt = browserDriver.findElement(By.id("Passwordvalid"));
 		pwdTxt.sendKeys(pass);
 		pwdTxt.sendKeys(Keys.ENTER);
-		try {
+		/*try {
 			Thread.sleep(30000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		//browserDriver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
+		}*/
+		new WebDriverWait(browserDriver, 30).until(
+		          webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
 	}	
 	
 	public WebElement bringTableRow(String tableName, String itemId) {
@@ -94,8 +98,7 @@ public class general {
 		JavascriptExecutor jse = (JavascriptExecutor)browserDriver;
 		jse.executeScript("window.scrollTo(0,document.body.scrollHeight)", "");
 		WebElement DataTable = browserDriver.findElement(By.id(tableName));
-		List<WebElement> TotalRowCount = DataTable.findElements(By.xpath("//*[@id='ItemsDataTable']/tbody/tr"));
-		
+		List<WebElement> TotalRowCount = DataTable.findElements(By.xpath("//*[@id='ItemsDataTable']/tbody/tr"));		
 		if (itemId !="") {
 			int RowIndex=1;		
 			for (WebElement rowElement:TotalRowCount) {
@@ -144,6 +147,7 @@ public class general {
 			}
 			itemNoCellVal="";			
 		}	
+		wb.close();
 		return null;
 	}
 	
@@ -170,8 +174,7 @@ public class general {
 		return null;
 	}
 	
-	// This method has been placed here in the general class because it will be called twice from register items page and from the create statement page
-	
+	// This method has been placed here in the general class because it will be called twice from register items page and from the create statement page	
 	public String createStatement(String mndoobId,boolean printOrNot, boolean pageSource /*true means this method will be invoked through register item page & false means this method will be invoked with in the create statement page */) {
 		if (pageSource) {
 			WebElement createStatementBtn = browserDriver.findElement(By.id("AddStatementBtn"));		
@@ -217,8 +220,7 @@ public class general {
 			WebElement cancelBtn = browserDriver.findElement(By.cssSelector("button[class='btn btn-default none-printable closepopup']"));
 			((JavascriptExecutor)browserDriver).executeScript("arguments[0].click();", cancelBtn);
 			//cancelBtn.click();
-		}
-		
+		}		
 		return statementNo;
 	}
 	
@@ -241,6 +243,4 @@ public class general {
 		}
 		return browserDriver;
 	}
-	
-
 }
