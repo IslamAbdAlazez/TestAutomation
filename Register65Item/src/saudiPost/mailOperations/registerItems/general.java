@@ -23,6 +23,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -30,7 +31,7 @@ public class general {
 	
 	static WebDriver browserDriver ;	
 
-	public void openPage(String fullPathCommaDele, String pageName) 
+	public void openPage(String fullPathCommaDele, String pageName)  
 	{
 		String currPointerText;
 		String[] fullPath = fullPathCommaDele.split(",");
@@ -41,8 +42,27 @@ public class general {
 			browserDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 			currPointerText="";
 		}
-		WebElement pageLnk = browserDriver.findElement(By.partialLinkText(pageName));
-		pageLnk.click();
+		try {
+			WebElement pageLnk = browserDriver.findElement(By.partialLinkText(pageName));
+			pageLnk.click();
+		} catch (Exception e) {
+			
+			Actions dragger = new Actions(browserDriver);
+			WebElement draggablePartOfScrollbar = browserDriver.findElement(By.className("scrollable-bar-handle"));
+			int numberOfPixelsToDragTheScrollbarDown = 325;
+			dragger.moveToElement(draggablePartOfScrollbar).clickAndHold().moveByOffset(0,numberOfPixelsToDragTheScrollbarDown).release().perform();
+			
+			/*WebElement element = browserDriver.findElement(By.partialLinkText(pageName));
+			((JavascriptExecutor) browserDriver).executeScript("arguments[0].scrollIntoView(true);", element);*/
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} 
+			//element.click();
+		}
+		
 		//browserDriver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 		/*try {
 			Thread.sleep(10000);
@@ -58,14 +78,15 @@ public class general {
 	{		
 		browserDriver.manage().deleteAllCookies();
 		browserDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-		browserDriver.get("http://212.100.202.154:5002");
+		browserDriver.get("https://mops.sp.com.sa/");
 		/*try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-		//browserDriver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);		
+		//browserDriver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);	
+		browserDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 	}
 	public void login(String uName, String pass) 
 	{

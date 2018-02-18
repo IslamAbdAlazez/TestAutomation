@@ -157,8 +157,8 @@ public class addItems {
 		browserDriver= genCls.main(browserName);
 		genCls.invokeBrowser();
 		genCls.login("mosimi","P@ssw0rd");
-		genCls.openPage("ÇáÚãáíÇÊ ÇáÈÑíÏíÉ,ÊÓÌíá ÇáÈÚÇÆË","Êßæíä ÈíÇä");
-		/*if(regItemObj.checkSenderStsatus()) {
+		genCls.openPage("ÇáÚãáíÇÊ ÇáÈÑíÏíÉ,ÊÓÌíá ÇáÈÚÇÆË","ÊÓÌíá ÈÚíËÉ");
+		if(regItemObj.checkSenderStsatus()) {
 			regItemObj.setSender("æÒÇÑÉ ÇáÚãá", "ÏíæÇä æÒÇÑÉ ÇáÚãá");
 		}
 		try {
@@ -166,15 +166,15 @@ public class addItems {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
-		//String statementNo = genCls.createStatement("456321",false,true);
-		String [] itemsToEdit = new String[3];
+		}
+		String statementNo = genCls.createStatement("456321",false,true);
+		/*String [] itemsToEdit = new String[3];
 		itemsToEdit[0]="RO198510002SA"; itemsToEdit[1] = "RO198510004SA"; itemsToEdit[2] = "RO198510006SA";
 		try {
 			regItemObj.editItems(itemsToEdit);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}*/		
 	}
 }

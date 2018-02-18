@@ -108,7 +108,12 @@ public void deleteSomeItems(String[] itemsNos , boolean [] delete, boolean pageS
 		browserDriver= genCls.main(browserName);
 		genCls.invokeBrowser();
 		genCls.login("mosimi","P@ssw0rd");
-		genCls.openPage("ÇáÚãáíÇÊ ÇáÈÑíÏíÉ,ÊÓÌíá ÇáÈÚÇÆË","Êßæíä ÈíÇä");
+		try {
+			genCls.openPage("ÇáÚãáíÇÊ ÇáÈÑíÏíÉ,ÊÓÌíá ÇáÈÚÇÆË","Êßæíä ÈíÇä");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// For deleting all items or some items from the beginning
 		delItems.deleteItems(65,false,false);			
