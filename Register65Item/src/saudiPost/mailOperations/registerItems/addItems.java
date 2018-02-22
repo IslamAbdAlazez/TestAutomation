@@ -108,10 +108,10 @@ public class addItems {
 		}		
 	}	
 	public boolean checkSenderStsatus() {
-		WebElement mainCrp = browserDriver.findElement(By.xpath("//*[@id=\"RenderBody\"]/div[1]/div[2]/div/div[1]/span/span[1]/span")).findElement(By.id("select2-mainCorporateCustomers-container"));
+		WebElement mainCrp = browserDriver.findElement(By.xpath("/html/body/div[6]/div[2]/div[1]/div[2]/div/div[1]/span[1]/span[1]/span/span[1]/span"));
 		// Check if sender can be selected
-		String title = mainCrp.getAttribute("title");
-		if (title.contains("«Œ — «·ÃÂ… «·—∆Ì”ÌÂ")) {
+		//String title = mainCrp.getAttribute("title");
+		if (mainCrp.isEnabled() /*title.contains("«œŒ·")*/) {
 			return true;
 		}
 		else {

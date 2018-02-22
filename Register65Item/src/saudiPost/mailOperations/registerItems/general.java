@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 //import java.util.function.Predicate;
 import java.util.function.Predicate;
-
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -31,13 +30,47 @@ public class general {
 	
 	static WebDriver browserDriver ;	
 
+	private static void holdForPageIsReady() {
+		
+        JavascriptExecutor js = (JavascriptExecutor) browserDriver;
+
+        // Initially bellow given if condition will check ready state of page.
+        if (js.executeScript("return document.readyState").toString().equals("complete")) {
+            System.out.println("Page Is loaded.");
+            return;
+        }
+
+        // This loop will rotate for 25 times to check If page Is ready after
+        // every 1 second.
+        // You can replace your value with 25 If you wants to Increase or
+        // decrease wait time.
+        for (int i = 0; i < 30; i++) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+            // To check page ready state.
+            if (js.executeScript("return document.readyState").toString().equals("complete")) {
+                break;
+            }
+        }
+    }
+	
 	public void openPage(String fullPathCommaDele, String pageName)  
 	{
+		general.holdForPageIsReady();
+		/*try {
+			Thread.sleep(8000);
+		} catch (InterruptedException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}*/
 		String currPointerText;
 		String[] fullPath = fullPathCommaDele.split(",");
 		for (int i = 0; i < fullPath.length; i++) {
 			currPointerText = fullPath[i].toString();
 			WebElement currPointer = browserDriver.findElement(By.linkText(currPointerText));
+			 System.out.println(currPointerText);
 			currPointer.click();
 			browserDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 			currPointerText="";
@@ -45,22 +78,24 @@ public class general {
 		try {
 			WebElement pageLnk = browserDriver.findElement(By.partialLinkText(pageName));
 			pageLnk.click();
+			general.holdForPageIsReady();
 		} catch (Exception e) {
 			
 			Actions dragger = new Actions(browserDriver);
 			WebElement draggablePartOfScrollbar = browserDriver.findElement(By.className("scrollable-bar-handle"));
 			int numberOfPixelsToDragTheScrollbarDown = 325;
 			dragger.moveToElement(draggablePartOfScrollbar).clickAndHold().moveByOffset(0,numberOfPixelsToDragTheScrollbarDown).release().perform();
-			
-			/*WebElement element = browserDriver.findElement(By.partialLinkText(pageName));
-			((JavascriptExecutor) browserDriver).executeScript("arguments[0].scrollIntoView(true);", element);*/
+			WebElement element = browserDriver.findElement(By.partialLinkText(pageName));
+			element.click();
+			general.holdForPageIsReady();
+			/*((JavascriptExecutor) browserDriver).executeScript("arguments[0].scrollIntoView(true);", element);
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			} 
-			//element.click();
+			//element.click();*/
 		}
 		
 		//browserDriver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
@@ -69,25 +104,27 @@ public class general {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		new WebDriverWait(browserDriver, 30).until(
-		          webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+		          webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));*/
 	}
 	
 	public void invokeBrowser() 
 	{		
 		browserDriver.manage().deleteAllCookies();
 		browserDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-		browserDriver.get("https://mops.sp.com.sa/");
+		browserDriver.get("http://212.100.202.154:5002");
 		/*try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		//browserDriver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);	
-		browserDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		browserDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);*/
+		general.holdForPageIsReady();
 	}
+	
 	public void login(String uName, String pass) 
 	{
 		WebElement usrNameTxt = browserDriver.findElement(By.id("UserNamevalid"));
@@ -95,14 +132,15 @@ public class general {
 		WebElement pwdTxt = browserDriver.findElement(By.id("Passwordvalid"));
 		pwdTxt.sendKeys(pass);
 		pwdTxt.sendKeys(Keys.ENTER);
+		general.holdForPageIsReady();
 		/*try {
 			Thread.sleep(30000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		new WebDriverWait(browserDriver, 30).until(
-		          webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+		          webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));*/
 	}	
 	
 	public WebElement bringTableRow(String tableName, String itemId) {
@@ -208,13 +246,14 @@ public class general {
 		}		
 		WebElement exportStatement = browserDriver.findElement(By.id("saveStatement"));
 		exportStatement.click();
-		try {
+		general.holdForPageIsReady();
+		/*try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		//browserDriver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
+		//browserDriver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);*/
 		WebElement statementNoLbl = browserDriver.findElement(By.cssSelector("text[text-anchor='middle']"));
 		String statementNo = statementNoLbl.getText(); 
 		if (printOrNot) {
