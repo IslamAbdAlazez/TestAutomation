@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -19,18 +18,19 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.*;
 import org.testng.annotations.Test;
 
 public class regItemsTestNG {
 
 	static WebDriver browserDriver;
 
-	@Test
 	private static void holdForPageIsReady() {
 
 		JavascriptExecutor js = (JavascriptExecutor) browserDriver;
-
 		// Initially bellow given if condition will check ready state of page.
 		if (js.executeScript("return document.readyState").toString().equals("complete")) {
 			System.out.println("Page Is loaded.");
@@ -39,9 +39,9 @@ public class regItemsTestNG {
 
 		// This loop will rotate for 25 times to check If page Is ready after
 		// every 1 second.
-		// You can replace your value with 25 If you wants to Increase or
+		// You can replace your value with 45 If you wants to Increase or
 		// decrease wait time.
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 45; i++) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -53,8 +53,11 @@ public class regItemsTestNG {
 		}
 	}
 
-	public void openPage(String fullPathCommaDele, String pageName) {
+	@Test(priority = 2)
+	public void openPage() {
 		regItemsTestNG.holdForPageIsReady();
+		String fullPathCommaDele = "ÇáÚãáíÇÊ ÇáÈÑíÏíÉ,ÊÓÌíá ÇáÈÚÇÆË";
+		String pageName = "ÊÓÌíá ÈÚíËÉ";
 		String currPointerText;
 		String[] fullPath = fullPathCommaDele.split(",");
 		for (int i = 0; i < fullPath.length; i++) {
@@ -66,6 +69,7 @@ public class regItemsTestNG {
 			currPointerText = "";
 		}
 		try {
+			Thread.sleep(4000);
 			WebElement pageLnk = browserDriver.findElement(By.partialLinkText(pageName));
 			pageLnk.click();
 			regItemsTestNG.holdForPageIsReady();
@@ -82,18 +86,36 @@ public class regItemsTestNG {
 		}
 	}
 
+	@BeforeTest
 	public void invokeBrowser() {
+		String browserName = "firefox";		
+		switch (browserName) {
+		// for Chrome
+		case "chrome":			
+			System.setProperty("webdriver.chrome.driver", "E:\\Selenium\\chromedriver.exe");
+			browserDriver= new ChromeDriver();
+			browserDriver.manage().window().maximize();
+			break;
+		case "firefox":
+			// for Firefox
+			System.setProperty("webdriver.gecko.driver", "E:\\Selenium\\geckodriver.exe");
+			browserDriver= new FirefoxDriver();
+			break;
+		default:
+			break;
+		}		
 		browserDriver.manage().deleteAllCookies();
 		browserDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		browserDriver.get("http://212.100.202.154:5002");
 		regItemsTestNG.holdForPageIsReady();
 	}
 
-	public void login(String uName, String pass) {
+	@Test(priority = 1)
+	public void login() {
 		WebElement usrNameTxt = browserDriver.findElement(By.id("UserNamevalid"));
-		usrNameTxt.sendKeys(uName);
+		usrNameTxt.sendKeys("mosimi");
 		WebElement pwdTxt = browserDriver.findElement(By.id("Passwordvalid"));
-		pwdTxt.sendKeys(pass);
+		pwdTxt.sendKeys("P@ssw0rd");
 		pwdTxt.sendKeys(Keys.ENTER);
 		regItemsTestNG.holdForPageIsReady();
 	}
@@ -133,7 +155,7 @@ public class regItemsTestNG {
 		}
 	}
 
-	public List<XSSFRow> readExcelRows(String fileFullPath, int sheetIndex, int startRowIndex, int endRowIndex)
+	public static List<XSSFRow> readExcelRows(String fileFullPath, int sheetIndex, int startRowIndex, int endRowIndex)
 			throws IOException {
 
 		File srcFile = new File(fileFullPath);
@@ -188,11 +210,9 @@ public class regItemsTestNG {
 		return null;
 	}
 
-	public String createStatement(String mndoobId, boolean printOrNot,
-			boolean pageSource /*
-								 * true means this method will be invoked through register item page & false
-								 * means this method will be invoked with in the create statement page
-								 */) {
+	@Test (priority=5,enabled = false)
+	public String createStatement (String mndoobId, boolean printOrNot, boolean pageSource) // true means this method will be invoked through register item page & false means this method will be invoked with in the create statement page 
+	{
 		if (pageSource) {
 			WebElement createStatementBtn = browserDriver.findElement(By.id("AddStatementBtn"));
 			createStatementBtn.click();
@@ -205,7 +225,7 @@ public class regItemsTestNG {
 		WebElement exportStatement = browserDriver.findElement(By.id("saveStatement"));
 		exportStatement.click();
 		regItemsTestNG.holdForPageIsReady();
-		
+
 		WebElement statementNoLbl = browserDriver.findElement(By.cssSelector("text[text-anchor='middle']"));
 		String statementNo = statementNoLbl.getText();
 		if (printOrNot) {
@@ -236,9 +256,10 @@ public class regItemsTestNG {
 		return statementNo;
 	}
 
+	@Test (enabled = false)
 	public void deleteItems(int itemsCount, boolean pageSource, boolean delPermOrFromStat) {
 
-			for (int i = 0; i < itemsCount; i++) {
+		for (int i = 0; i < itemsCount; i++) {
 			WebElement currDelBtn = regItemsTestNG.bringTableRow("ItemsDataTable", "")
 					.findElement(By.cssSelector("button[data-original-title='ÍÐÝ']"));
 			currDelBtn.click();
@@ -275,6 +296,108 @@ public class regItemsTestNG {
 			if (browserDriver.findElements(By.className("dataTables_empty")).size() != 0) {
 				break;
 			}
+		}
+	}
+
+	public static boolean checkSenderStsatus() {
+		WebElement mainCrp = browserDriver.findElement(
+				By.xpath("/html/body/div[6]/div[2]/div[1]/div[2]/div/div[1]/span[1]/span[1]/span/span[1]/span"));
+		// Check if sender can be selected
+		// String title = mainCrp.getAttribute("title");
+		if (mainCrp.isEnabled() /* title.contains("ÇÏÎá") */) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Test(priority = 4)
+	public void setItemDetails() throws IOException 
+	{
+		int startItemNOCellNo = 100;
+		int itemsCount = 10;
+		WebElement inputInternal = browserDriver.findElement(By.id("Internal"));
+		WebElement inputExternal = browserDriver.findElement(By.id("External"));
+		WebElement itemTypeCombo = browserDriver.findElement(By.id("select2-itemType-container"));
+		WebElement itemWeightTextBox = browserDriver.findElement(By.id("weight"));
+		WebElement orgCode = browserDriver.findElement(By.id("OriginalCode"));
+		WebElement repeatOriginalCodeChk = browserDriver.findElement(By.id("repeatOriginalCode"));
+		WebElement itemNO = browserDriver.findElement(By.id("packageno"));
+		WebElement itemDescBtn = browserDriver.findElement(By.id("addItemDescriptionBtn"));
+		ArrayList<XSSFRow> excelRows = new ArrayList<XSSFRow>();
+		XSSFRow currentRow;
+		int endItemNO = startItemNOCellNo + itemsCount;
+		excelRows.addAll(regItemsTestNG.readExcelRows("E:\\Selenium\\ItemsData.xltm", 0, startItemNOCellNo, endItemNO));
+		// Adding the item details
+		for (int i = startItemNOCellNo; i < endItemNO; i++) {
+			currentRow = (XSSFRow) excelRows.get(i - 1);
+			if (currentRow.getCell(4) != null && currentRow.getCell(4).getStringCellValue().trim() != "") {
+				itemDescBtn.click();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				WebElement itemDescTextBox = browserDriver.findElement(By.id("ItemDesc"));
+				itemDescTextBox.sendKeys(currentRow.getCell(4).getStringCellValue().trim());
+				itemDescTextBox = null;
+			}
+			if (currentRow.getCell(5).getStringCellValue().trim().equals("ÏÇÎáí")) {
+				inputInternal.click();
+			} else {
+				inputExternal.click();
+			}
+			itemTypeCombo.click();
+			WebElement itemTypeComboSearch = browserDriver.findElement(By.className("select2-search__field"));
+			itemTypeComboSearch.sendKeys(currentRow.getCell(6).getStringCellValue().trim());
+			itemTypeComboSearch.sendKeys(Keys.ENTER);
+			XSSFCell itemWeightCell = currentRow.getCell(7);
+			itemWeightCell.setCellType(itemWeightCell.CELL_TYPE_STRING);
+			itemWeightTextBox.sendKeys(itemWeightCell.toString());
+			if (i == startItemNOCellNo) {
+				orgCode.sendKeys(currentRow.getCell(8).getStringCellValue().trim());
+			}
+			if (repeatOriginalCodeChk.isSelected() == false) {
+				repeatOriginalCodeChk.click();
+			}
+			itemNO.sendKeys(currentRow.getCell(3).getStringCellValue());
+			itemNO.sendKeys(Keys.ENTER);
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			currentRow = null;
+		}
+	}
+
+	@Test(priority = 3)
+	public void setSender() {
+		if (regItemsTestNG.checkSenderStsatus()) {
+			WebElement mainCrp = browserDriver.findElement(By.id("select2-mainCorporateCustomers-container"));
+			mainCrp.click();
+			WebElement gehaMainText = browserDriver.findElement(By.className("select2-search__field"));
+			gehaMainText.sendKeys("æÒÇÑÉ ÇáÚãá");
+			gehaMainText.sendKeys(Keys.ENTER);
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			WebElement gehaSub = browserDriver.findElement(By.id("select2-subCorporateCustomers-container"));
+			gehaSub.click();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			WebElement gehaSubText = browserDriver.findElement(By.className("select2-search__field"));
+			gehaSubText.sendKeys("ÏíæÇä æÒÇÑÉ ÇáÚãá");
+			gehaSubText.sendKeys(Keys.ENTER);
 		}
 	}
 

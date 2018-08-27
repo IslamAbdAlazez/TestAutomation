@@ -76,6 +76,7 @@ public class general {
 			currPointerText="";
 		}
 		try {
+			Thread.sleep(4000);
 			WebElement pageLnk = browserDriver.findElement(By.partialLinkText(pageName));
 			pageLnk.click();
 			general.holdForPageIsReady();
@@ -113,7 +114,7 @@ public class general {
 	{		
 		browserDriver.manage().deleteAllCookies();
 		browserDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-		browserDriver.get("http://212.100.202.154:5002");
+		browserDriver.get("http://212.100.202.158:5000");
 		/*try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {

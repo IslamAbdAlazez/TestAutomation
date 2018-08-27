@@ -23,6 +23,12 @@ public class profileLocationPageFactory {
 	@FindBy(id="location-country")
 	private WebElement countryComboBox;
 	
+	@FindBy(id="location-postal")
+	private WebElement postalCodeTextBox;
+	
+	@FindBy(className="onboarding-widget__cta button-primary-x-large full-width ember-view")
+	private WebElement nextBtn;
+	
 	public  profileLocationPageFactory(WebDriver driver) {
 		PageFactory.initElements(driver, this);
 		js = (JavascriptExecutor) driver;
@@ -33,5 +39,7 @@ public class profileLocationPageFactory {
 		
         // The following block of code is used if I Want to change the country
         dropdown.selectByVisibleText(countryName);
+        postalCodeTextBox.sendKeys(postalCode);
+        nextBtn.click();
 	}
 }

@@ -3,6 +3,7 @@
  */
 package LinkedIn;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 /**
  * @author Islam Abd Alazez Abd Alhamed
@@ -17,8 +18,8 @@ import org.openqa.selenium.support.ui.Select;
 public class registerPageFactory {
 	
 	JavascriptExecutor js ;
-	
-	Select dropdown;
+		
+	WebDriver browserDriver;
 	
 	@FindBy(id="reg-firstname")
 	private WebElement firstNameTextBox;
@@ -34,14 +35,11 @@ public class registerPageFactory {
 	
 	@FindBy(id="registration-submit")
 	private WebElement joinButton;
-	
-	@FindBy(id="location-country")
-	private WebElement countryComboBox;
-	
+		
 	public  registerPageFactory(WebDriver driver) {
 		PageFactory.initElements(driver, this);
 		js = (JavascriptExecutor) driver;
-
+		browserDriver = driver;
 	}
 	
 	public void registerUser(String firstName, String lastName, String eMail, String password, String country, String zipCode) {
@@ -67,7 +65,15 @@ public class registerPageFactory {
             }
         }
         
-        // The following block of code is used if I Want to change the country
-        dropdown.selectByVisibleText("Egypt");
+        // Check if there is a CAPATCHA or security verification wait for 90 seconds to allow the user to submit it manually
+        if(browserDriver.findElement(By.id("nocaptcha")).isDisplayed() || browserDriver.findElement(By.id("call")).isDisplayed()) 
+        {
+        	try {
+				Thread.sleep(90000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
 	}
 }

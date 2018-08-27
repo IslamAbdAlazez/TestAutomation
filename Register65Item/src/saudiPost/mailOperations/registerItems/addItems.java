@@ -1,6 +1,7 @@
 package saudiPost.mailOperations.registerItems;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 import java.io.IOException;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -26,6 +27,12 @@ public class addItems {
 		WebElement gehaMainText = browserDriver.findElement(By.className("select2-search__field"));
 		gehaMainText.sendKeys(mainCorpName);
 		gehaMainText.sendKeys(Keys.ENTER);
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		WebElement gehaSub = browserDriver.findElement(By.id("select2-subCorporateCustomers-container"));
 		gehaSub.click();
 		try {
@@ -156,7 +163,7 @@ public class addItems {
 		browserName[0]="firefox";
 		browserDriver= genCls.main(browserName);
 		genCls.invokeBrowser();
-		genCls.login("mosimi","P@ssw0rd");
+		genCls.login("mrowily","P@ssw0rd");
 		genCls.openPage("ÇáÚãáíÇÊ ÇáÈÑíÏíÉ,ÊÓÌíá ÇáÈÚÇÆË","ÊÓÌíá ÈÚíËÉ");
 		if(regItemObj.checkSenderStsatus()) {
 			regItemObj.setSender("æÒÇÑÉ ÇáÚãá", "ÏíæÇä æÒÇÑÉ ÇáÚãá");
