@@ -1,10 +1,7 @@
 package LinkedIn;
 
-import org.testng.annotations.Test;
-
 import java.io.FileInputStream;
 import java.io.IOException;
-
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -12,15 +9,13 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.testng.annotations.DataProvider;
 
 public class generalClass {
 	
 	public static String filePath = System.getProperty("user.dir")+"\\LinkedInUserData.xlsx";
 	static String SheetName= "Sheet1";
-
-  @DataProvider (name="readDataFromExcel")
-  public static Object[][] readDataFromExcel() throws IOException {
+  
+  public String[][] readDataFromExcel() throws IOException {
 	  FileInputStream fileInputStream= new FileInputStream(filePath); 
       
 		// Get the workbook		
@@ -39,11 +34,11 @@ public class generalClass {
       int ColNum= Row.getLastCellNum(); 
       
       // pass the count data in array 
-      Object Data[][]= new Object[RowNum-1][ColNum]; 
+      String Data[][]= new String[RowNum-1][ColNum]; 
       DataFormatter formatter = new DataFormatter(); 
       
       //Loop work for Rows
-          for(int i=0; i<2-1; i++) // 2 Here to get only 1 row. You can replace 2 with 3 to get 2 rows and so on.
+          for(int i=0; i<RowNum-1; i++) // 2 Here to get only 1 row. You can replace 2 with 3 to get 2 rows and so on.
           {  
               XSSFRow row= (XSSFRow) worksheet.getRow(i+1);
               //Loop work for colNum
@@ -67,6 +62,6 @@ public class generalClass {
           }
       workbook.close();
       return Data;
-    };
+    }
   }
 

@@ -3,17 +3,15 @@
  */
 package LinkedIn;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 /**
  * @author Islam Abd Alazez Abd Alhamed
  *
  */
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement; 
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.Select;
 
 public class logInPageFactory {
 	
@@ -40,16 +38,18 @@ public class logInPageFactory {
 	}
 	
 	public void signInUser(String eMail, String password) {
-		
+		browserDriver.get("https://www.linkedin.com");
+		// Waiting for the page to submit
+		waitForPageLoad(30);
 		emailTextBox.sendKeys(eMail);
 		passwordTextBox.sendKeys(password);
 		signInButton.click();
+	}
+	
+	private void waitForPageLoad (int timeInSeconds) {
 		
-		// Waiting for the page to submit
-		
-		// This loop will rotate for 30 times to check If page Is ready after every 1 second.
-        // You can replace your value with 30 If you wants to Increase or decrease wait time.
-        for (int i = 0; i < 30; i++) {
+		// This loop will rotate for the number passed in the timeInSeconds input parameter to check If page Is ready after every 1 second.
+            for (int i = 0; i < timeInSeconds; i++) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
