@@ -2,6 +2,8 @@ package LinkedIn;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -9,13 +11,27 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 public class generalClass {
-	
+	JavascriptExecutor js ;
 	public static String filePath = System.getProperty("user.dir")+"\\LinkedInUserData.xlsx";
 	static String SheetName= "Sheet1";
-  
-  public String[][] readDataFromExcel() throws IOException {
+	static WebDriver browserDriver ;
+	
+public generalClass() {
+	System.setProperty("webdriver.chrome.driver", "C:\\Selenium\\chromedriver.exe");
+	browserDriver= new ChromeDriver();
+	browserDriver.manage().window().maximize();
+  	browserDriver.manage().deleteAllCookies();
+	browserDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+	browserDriver.get("https://www.linkedin.com/");
+	js = (JavascriptExecutor) browserDriver;
+}
+	
+public String[][] readDataFromExcel() throws IOException {
 	  FileInputStream fileInputStream= new FileInputStream(filePath); 
       
 		// Get the workbook		
@@ -63,5 +79,19 @@ public class generalClass {
       workbook.close();
       return Data;
     }
+	
+	public void waitForPageLoad (int timeInSeconds) {
+		
+		// This loop will rotate for the number passed in the timeInSeconds input parameter to check If page Is ready after every 1 second.
+          for (int i = 0; i < timeInSeconds; i++) {
+          try {
+              Thread.sleep(1000);
+          } catch (InterruptedException e) {
+          }
+          // To check page ready state.
+          if (js.executeScript("return document.readyState").toString().equals("complete")) {
+              break;
+          }
+      }
+	}
   }
-
