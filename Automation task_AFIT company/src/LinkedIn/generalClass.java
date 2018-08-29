@@ -10,6 +10,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 
 public class generalClass {
 	JavascriptExecutor js ;
@@ -65,8 +66,8 @@ public String[][] readDataFromExcel() throws IOException {
       return Data;
     }
 	
-	public void waitForPageLoad (int timeInSeconds) {
-		
+	public void waitForPageLoad (int timeInSeconds, WebDriver driver) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		// This loop will rotate for the number passed in the timeInSeconds input parameter to check If page Is ready after every 1 second.
           for (int i = 0; i < timeInSeconds; i++) {
           try {

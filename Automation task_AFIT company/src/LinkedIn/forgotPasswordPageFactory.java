@@ -8,9 +8,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class resetPasswordPageFactory {
+public class forgotPasswordPageFactory {
 	
-	generalClass glc;
+	generalClass glc = new generalClass();
 	WebDriver browserDriver;
 	
 	@FindBy(id="username")
@@ -22,14 +22,28 @@ public class resetPasswordPageFactory {
 	@FindBy(className = "form__cancel")
 	private WebElement cancelBtn; 
 	
-	public  resetPasswordPageFactory(WebDriver driver) {
+	@FindBy(xpath = "//*[@id=\"app__container\"]/div[1]/div/div[1]/span")
+	private WebElement notFoundEMailValidation;
+	
+	public  forgotPasswordPageFactory(WebDriver driver) {
 		PageFactory.initElements(driver, this);
-		browserDriver = driver;
+		browserDriver = driver;		
 	}
 	
 	public void resetPassword(String eMail) {
+		glc.waitForPageLoad(30, browserDriver);
 		emailTextBox.sendKeys(eMail);
-		findAccountButton.click();
+		findAccountButton.click();		
+	}
+
+	public boolean validateEMailAddress() {
+		if (notFoundEMailValidation.isDisplayed()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
 	}
 	
 }

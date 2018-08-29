@@ -16,7 +16,7 @@ import org.openqa.selenium.support.PageFactory;
 public class logInPageFactory {
 	
 	JavascriptExecutor js ;
-	generalClass glc;	
+	generalClass glc = new generalClass();	
 	WebDriver browserDriver;
 	
 	@FindBy(id="login-email")
@@ -40,20 +40,13 @@ public class logInPageFactory {
 	
 	public void signInUser(String eMail, String password) {
 		
-		// Waiting for the page to submit
-        try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		emailTextBox.sendKeys(eMail);
 		passwordTextBox.sendKeys(password);
-		signInButton.click();
+		signInButton.submit();
 	}
 	
-	private void forgotPassword() {
+	public void forgotPassword() {
 		forgotPasswordBtn.click();
-		glc.waitForPageLoad(30);
+		glc.waitForPageLoad(30, browserDriver);
 	}
 }
