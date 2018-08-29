@@ -10,12 +10,24 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 
 public class logIn {
 	
-	generalClass glc;
+	WebDriver browserDriver ;
+	logInPageFactory lpf;
+	generalClass glc = new generalClass();
+	
+	 @BeforeTest
+	  public void beforeTest() {
+		 System.setProperty("webdriver.chrome.driver", "C:\\Selenium\\chromedriver.exe");
+			browserDriver= new ChromeDriver();
+			browserDriver.manage().window().maximize();
+		  	browserDriver.manage().deleteAllCookies();
+			browserDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+			browserDriver.get("https://www.linkedin.com/");
+			lpf = new logInPageFactory(browserDriver);
+	  }
   // This method is used to get specific data from the excel row returned from LinkedIn.generalClass.readDataFromExcel() method	
 	
 	@BeforeTest ()  
@@ -33,28 +45,22 @@ public class logIn {
 	}
 	
   @Test (priority = 20, dataProvider="validUserData")
-  public void successfulUserLogIn(String firstName, String lastName, String eMail, String password, String profileLocation, String postalCode) {
-	  logInPageFactory lpf = new logInPageFactory(generalClass.browserDriver);
+  public void successfulUserLogIn(String firstName, String lastName, String eMail, String password, String profileLocation, String postalCode) {	  
+	  browserDriver.get("https://www.linkedin.com/");
 	  lpf.signInUser(eMail, password);
-	  assertEquals(generalClass.browserDriver.getTitle(), "LinkedIn","LinkedIn home page is not displayed");
+	  assertEquals(browserDriver.getTitle(), "LinkedIn","LinkedIn home page is not displayed");
   }
 
   @Test (priority = 10, dataProvider="inValidUserData")
-  public void unSuccessfulUserLogIn(String firstName, String lastName, String eMail, String password, String profileLocation, String postalCode) throws Exception {
-	  logInPageFactory lpf = new logInPageFactory(generalClass.browserDriver);
+  public void unSuccessfulUserLogIn(String firstName, String lastName, String eMail, String password, String profileLocation, String postalCode) throws Exception {	  
 	  lpf.signInUser(eMail, password);	  
-	  assertTrue(generalClass.browserDriver.findElement(By.id("session_key-login-error")).isDisplayed(),"System did not displayed the error validation");
+	  assertTrue(browserDriver.findElement(By.id("session_key-login-error")).isDisplayed(),"System did not displayed the error validation");
 	  Thread.sleep(5000);
   }
-  
-  @BeforeTest
-  public void beforeTest() {
-	  glc = new generalClass();  
-  }
-  
+ 
   @AfterTest
   public void afterTest () 
   {
-	  generalClass.browserDriver.quit();
+	  browserDriver.quit();
   }
 }

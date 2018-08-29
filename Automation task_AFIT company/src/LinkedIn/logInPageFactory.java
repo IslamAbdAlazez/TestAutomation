@@ -32,16 +32,21 @@ public class logInPageFactory {
 	private WebElement forgotPasswordBtn; 
 	
 	public  logInPageFactory(WebDriver driver) {
-		glc = new generalClass();
+		
 		PageFactory.initElements(driver, this);
 		js = (JavascriptExecutor) driver;
 		browserDriver = driver;
 	}
 	
 	public void signInUser(String eMail, String password) {
-		browserDriver.get("https://www.linkedin.com");
+		
 		// Waiting for the page to submit
-		glc.waitForPageLoad(30);
+        try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		emailTextBox.sendKeys(eMail);
 		passwordTextBox.sendKeys(password);
 		signInButton.click();

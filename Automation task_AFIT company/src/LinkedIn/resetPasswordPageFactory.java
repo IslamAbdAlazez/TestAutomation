@@ -3,11 +3,6 @@
  */
 package LinkedIn;
 
-/**
- * @author Islam Abd Alazez Abd Alhamed
- *
- */
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement; 
 import org.openqa.selenium.support.FindBy;
