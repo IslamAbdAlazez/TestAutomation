@@ -7,7 +7,6 @@
         <methods>
           <include name="getInvalidUserCredentials"/>
           <include name="successfulResetPassword" invocation-numbers="0"/>
-          <include name="unSuccessfulResetPassword" invocation-numbers="0"/>
           <include name="getValidUserCredentials"/>
           <include name="BeforeClass"/>
           <include name="afterTest"/>

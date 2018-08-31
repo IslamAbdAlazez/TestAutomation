@@ -25,7 +25,10 @@ public class forgotPasswordPageFactory {
 	@FindBy(xpath = "//*[@id=\"app__container\"]/div[1]/div/div[1]/span")
 	private WebElement notFoundEMailValidation;
 	
-	public  forgotPasswordPageFactory(WebDriver driver) {
+	@FindBy(id = "resend-url")
+	private WebElement resendURL;
+	
+	public forgotPasswordPageFactory(WebDriver driver) {
 		PageFactory.initElements(driver, this);
 		browserDriver = driver;		
 	}
@@ -35,7 +38,7 @@ public class forgotPasswordPageFactory {
 		emailTextBox.sendKeys(eMail);
 		findAccountButton.click();		
 	}
-
+	
 	public boolean validateEMailAddress() {
 		if (notFoundEMailValidation.isDisplayed()) {
 			return true;

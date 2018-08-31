@@ -31,7 +31,7 @@ public class logInPageFactory {
 	@FindBy(className = "link-forgot-password")
 	private WebElement forgotPasswordBtn; 
 	
-	public  logInPageFactory(WebDriver driver) {
+	public logInPageFactory(WebDriver driver) {
 		
 		PageFactory.initElements(driver, this);
 		js = (JavascriptExecutor) driver;

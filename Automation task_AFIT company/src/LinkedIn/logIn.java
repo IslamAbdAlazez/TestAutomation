@@ -35,14 +35,14 @@ public class logIn {
 	@DataProvider(name="validUserData")
   public String[][] getValidUserCredentials() throws IOException 
   {	
-		return new String[][] { glc.readDataFromExcel()[0]};	  
+		return new String[][] { glc.readDataFromExcel(1)[0]};	  
   }
   
 	@BeforeTest ()
 	@DataProvider(name="inValidUserData")
 	public Object[][] getInvalidUserCredentials() throws IOException 
 	{	
-	   return new String[][] { glc.readDataFromExcel()[1]};		  
+	   return new String[][] { glc.readDataFromExcel(1)[1]};		  
 	}
 	
   @Test (priority = 20, dataProvider="validUserData")

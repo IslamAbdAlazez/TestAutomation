@@ -2,6 +2,8 @@ package LinkedIn;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -9,7 +11,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 
 public class generalClass {
@@ -17,7 +21,7 @@ public class generalClass {
 	public static String filePath = System.getProperty("user.dir")+"\\LinkedInUserData.xlsx";
 	static String SheetName= "Sheet1";
 	
-public String[][] readDataFromExcel() throws IOException {
+public String[][] readDataFromExcel(int desiredRowZeroBasedNum) throws IOException {
 	  FileInputStream fileInputStream= new FileInputStream(filePath); 
       
 		// Get the workbook		
@@ -36,13 +40,13 @@ public String[][] readDataFromExcel() throws IOException {
       int ColNum= Row.getLastCellNum(); 
       
       // pass the count data in array 
-      String Data[][]= new String[RowNum-1][ColNum]; 
+      String Data[][]= new String[RowNum][ColNum]; 
       DataFormatter formatter = new DataFormatter(); 
       
       //Loop work for Rows
-          for(int i=0; i<RowNum-1; i++) // 2 Here to get only 1 row. You can replace 2 with 3 to get 2 rows and so on.
+          for(int i=desiredRowZeroBasedNum; i<RowNum; i++) 
           {  
-              XSSFRow row= (XSSFRow) worksheet.getRow(i+1);
+              XSSFRow row= (XSSFRow) worksheet.getRow(i);
               //Loop work for colNum
               for (int j=0; j<ColNum; j++) 
               {
@@ -79,5 +83,12 @@ public String[][] readDataFromExcel() throws IOException {
               break;
           }
       }
+	}
+	public void openNewTab(WebDriver driver, String URL) {
+		
+		((JavascriptExecutor)driver).executeScript("window.open()");
+		ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
+		driver.switchTo().window(tabs.get(1));
+		driver.get(URL);
 	}
   }
