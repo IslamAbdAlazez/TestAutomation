@@ -3,15 +3,15 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test name="Default test(failed)">
     <classes>
-      <class name="LinkedIn.forgotPassword">
+      <class name="LinkedIn.profileEdit">
         <methods>
-          <include name="getInvalidUserCredentials"/>
-          <include name="successfulResetPassword" invocation-numbers="0"/>
-          <include name="getValidUserCredentials"/>
+          <include name="addBackgroundProfileSection"/>
+          <include name="addIntroProfileSection" invocation-numbers="0"/>
           <include name="BeforeClass"/>
           <include name="afterTest"/>
+          <include name="getValidUserCredentials"/>
         </methods>
-      </class> <!-- LinkedIn.forgotPassword -->
+      </class> <!-- LinkedIn.profileEdit -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

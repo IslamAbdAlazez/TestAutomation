@@ -64,6 +64,13 @@ public class forgotPassword {
 		glc.waitForPageLoad(35, browserDriver);
 		gpf.readMail();
 		rppf.completeResetPassword("P@ssw0rd64");
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Assert.assertEquals(rppf.confirmPasswordChanged(), true);
 	}	  
   }
     
@@ -75,7 +82,7 @@ public class forgotPassword {
 	  Thread.sleep(5000);
   }
  
-  @AfterClass(enabled = false)
+  @AfterClass()
   public void afterTest () 
   {
 	  browserDriver.quit();
