@@ -32,5 +32,4 @@ public class registerNewUser {
   @BeforeTest
   public void beforeTest() {
   }
-
 }

@@ -29,8 +29,8 @@ public class feedPage {
 	  }
   // This method is used to get specific data from the excel row returned from LinkedIn.generalClass.readDataFromExcel() method	
 	
-	 @BeforeTest ()  
-		@DataProvider(name="validUserData")
+	@BeforeTest ()  
+	@DataProvider(name="validUserData")
 	  public String[][] getValidUserCredentials() throws IOException 
 	  {	
 			String [][] excelRow = new String[][] { glc.readDataFromExcel(1)[1]};

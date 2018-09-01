@@ -1,13 +1,8 @@
 package LinkedIn;
 
 import org.testng.annotations.Test;
-
-import junit.framework.Assert;
-
 import org.testng.annotations.DataProvider;
-
 import static org.testng.Assert.assertEquals;
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebDriver;
@@ -63,22 +58,28 @@ public class profileEdit {
 	  signIn.successfulUserLogIn(email, password);
 	  fp.openFeedPage(email, password, true, browserDriver); // true her means that the user is already logged in so there is no need to login again 
 	  try {
-		pepf.addIntroProfileSection();
+		pepf.addIntroProfileSection(browserDriver);
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	} 
-	  assertEquals(pepf.summaryDiv.getAttribute("innerText").contains("This is a demo summary text"), true);
-	  browserDriver.navigate().refresh();
+	  assertEquals(pepf.summaryDiv.getAttribute("innerText").contains("This is a demo summary text"), true);	 
   }
   
   @Test (priority = 20)
   public void addBackgroundProfileSection () {
-	  pepf.addBackgroundProfileSection();
-	  browserDriver.navigate().refresh();
+	  pepf.addBackgroundProfileSection(browserDriver);
+	  assertEquals(pepf.companyNameSpan.getAttribute("innerText").contains("This is a demo position company"), true);
   }
   
-  @AfterClass (enabled = false)
+  @Test(priority = 30)
+  public void addSkillsProfileSection() {
+	  pepf.addSkillsProfileSection(browserDriver);
+	  browserDriver.navigate().refresh();
+	  glc.waitForPageLoad(30, browserDriver);
+  }
+  
+  @AfterClass ()
   public void afterTest () 
   {
 	  browserDriver.quit();
