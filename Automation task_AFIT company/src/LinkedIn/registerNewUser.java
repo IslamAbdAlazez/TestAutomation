@@ -26,18 +26,19 @@ public class registerNewUser {
 		  	browserDriver.manage().deleteAllCookies();
 			browserDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 			browserDriver.get("https://www.linkedin.com/");
+			
 	  }
 	
   @Test (priority = 20)
   public void successfulRegisteration() {
 	  registerPageFactory rpf = new registerPageFactory(browserDriver);
-	  rpf.successfulRegisteration(userData[0][0], userData[0][1], userData[0][2], userData[0][3], userData[0][4], userData[0][5]);
+	  rpf.successfulRegisteration(userData[0][0], userData[0][1], userData[0][2], userData[0][3]);
   }
  
   @Test (priority = 10)
   public void notSuccessfulRegisteration() {
 	  registerPageFactory rpf = new registerPageFactory(browserDriver);
-	  rpf.notSuccessfulRegisteration(userData[0][0], userData[0][1], userData[0][2], userData[0][4], userData[0][5]);
+	  rpf.notSuccessfulRegisteration(userData[0][0], userData[0][1], userData[0][2]);
 	  Assert.assertEquals(rpf.passwordValidation.isDisplayed(), true);
   }
 
