@@ -3,13 +3,14 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="LinkedIn.registerNewUser">
+      <class name="saudiPost.mailOperations.registerItems.regItemsTestNG">
         <methods>
-          <include name="beforeTest"/>
-          <include name="successfulRegisteration"/>
-          <include name="beforeClass"/>
+          <include name="openPage"/>
+          <include name="setItemDetails"/>
+          <include name="invokeBrowser"/>
+          <include name="setSender"/>
         </methods>
-      </class> <!-- LinkedIn.registerNewUser -->
+      </class> <!-- saudiPost.mailOperations.registerItems.regItemsTestNG -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

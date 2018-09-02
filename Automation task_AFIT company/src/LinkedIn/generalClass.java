@@ -12,12 +12,14 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.DataProvider;
 
 public class generalClass {
 	JavascriptExecutor js ;
 	public static String filePath = System.getProperty("user.dir")+"\\LinkedInUserData.xlsx";
 	static String SheetName= "Sheet1";
-	
+
+	@DataProvider (name = "readDataFromExcel")
 public String[][] readDataFromExcel(int desiredRowZeroBasedNum) throws IOException {
 	  FileInputStream fileInputStream= new FileInputStream(filePath); 
       
@@ -30,39 +32,33 @@ public String[][] readDataFromExcel(int desiredRowZeroBasedNum) throws IOExcepti
       //get my Row which start from 0
       Row Row=worksheet.getRow(0);    
       
-      // count the number of Rows
-      int RowNum = worksheet.getPhysicalNumberOfRows();
-      
       // get last ColNum by referencing the first row 
       int ColNum= Row.getLastCellNum(); 
       
       // pass the count data in array 
-      String Data[][]= new String[RowNum][ColNum]; 
+      String Data[][]= new String[1][ColNum]; 
       DataFormatter formatter = new DataFormatter(); 
-      
-      //Loop work for Rows
-          for(int i=desiredRowZeroBasedNum; i<RowNum; i++) 
-          {  
-              XSSFRow row= (XSSFRow) worksheet.getRow(i);
+            
+              XSSFRow row= (XSSFRow) worksheet.getRow(desiredRowZeroBasedNum);
               //Loop work for colNum
               for (int j=0; j<ColNum; j++) 
               {
                   if(row==null)
-                      Data[i][j]= "";
+                      Data[0][j]= "";
                    else
                   {
                       XSSFCell cell= row.getCell(j);
                       if(cell==null)
                       	//if it get Null value it pass no data 
-                          Data[i][j]= ""; 
+                          Data[0][j]= ""; 
                       else
                       {
                           String value= formatter.formatCellValue(cell);                          
-                          Data[i][j]=value;                             
+                          Data[0][j]=value;                             
                       }
                   }
               }             
-          }
+          
       workbook.close();
       return Data;
     }

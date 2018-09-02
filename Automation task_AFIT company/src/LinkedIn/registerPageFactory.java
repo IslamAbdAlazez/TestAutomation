@@ -34,6 +34,9 @@ public class registerPageFactory {
 	
 	@FindBy(id="registration-submit")
 	private WebElement joinButton;
+	
+	@FindBy(xpath = "//*[@id=\"regForm\"]/div/div/p/span")
+	public WebElement passwordValidation;
 		
 	public  registerPageFactory(WebDriver driver) {
 		PageFactory.initElements(driver, this);
@@ -41,11 +44,15 @@ public class registerPageFactory {
 		browserDriver = driver;
 	}
 	
-	public void registerUser(String firstName, String lastName, String eMail, String password, String country, String zipCode) {
+	public void successfulRegisteration(String firstName, String lastName, String eMail, String password, String country, String zipCode) {
 		
+		firstNameTextBox.clear();
 		firstNameTextBox.sendKeys(firstName);
+		lastNameTextBox.clear();
 		lastNameTextBox.sendKeys(lastName);
+		emailTextBox.clear();
 		emailTextBox.sendKeys(eMail);
+		passwordTextBox.clear();
 		passwordTextBox.sendKeys(password);
 		joinButton.click();
 		
@@ -74,5 +81,20 @@ public class registerPageFactory {
 				e.printStackTrace();
 			}
         }
+	}
+	
+	// This method try to register without password 
+public void notSuccessfulRegisteration(String firstName, String lastName, String eMail, String country, String zipCode) {
+		
+		firstNameTextBox.sendKeys(firstName);
+		lastNameTextBox.sendKeys(lastName);
+		emailTextBox.sendKeys(eMail);
+		joinButton.click();
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}      
 	}
 }
