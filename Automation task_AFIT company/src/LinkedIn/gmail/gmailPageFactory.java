@@ -33,7 +33,7 @@ public class gmailPageFactory {
 }
 	
 	public String getPinFromMailSubject() {
-		List<WebElement> email = browserDriver.findElements(By.cssSelector("div.xT>div.y6>span>b"));
+		List<WebElement> email = browserDriver.findElements(By.xpath("//*[@class='yW']/span"));
 		for(WebElement emailsub : email){
 		    if(emailsub.getText().contains("your pin is")){
 

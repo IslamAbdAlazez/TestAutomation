@@ -4,15 +4,19 @@
 package LinkedIn;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
-
+import LinkedIn.gmail.gmailLogin;
 import LinkedIn.gmail.gmailPageFactory;
 
 public class registerPageFactory {
+	
+	gmailLogin gLogin;
+	generalClass glc;
 	
 	JavascriptExecutor js ;
 	Select countryDropdown;
@@ -91,8 +95,8 @@ public class registerPageFactory {
 		PageFactory.initElements(driver, this);
 		js = (JavascriptExecutor) driver;
 		browserDriver = driver;
-		
-		
+		gLogin = new gmailLogin(browserDriver);
+		glc = new generalClass();
 	}
 	
 	public void successfulRegisteration(String firstName, String lastName, String eMail, String password, String countryName, String postalCode, String jobTitle, String companyName, String workIndustry) {
@@ -125,16 +129,27 @@ public class registerPageFactory {
         waitForPageLoad(30);
         
     	jobTitleTextBox.sendKeys(jobTitle);
-		companyTextBox.sendKeys(companyName);
-		workIndustryDropDown = new Select(workIndustryComboBox);
-		workIndustryDropDown.selectByVisibleText(workIndustry);
-		continuetBtn.click();
+    	companyTextBox.sendKeys(companyName);
+    	companyTextBox.sendKeys(Keys.ENTER);
+    	
+    	try {
+    		workIndustryDropDown = new Select(workIndustryComboBox);
+    		workIndustryDropDown.selectByVisibleText(workIndustry);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+    	finally {
+    		continuetBtn.click();
+		}
+    	
 		waitForPageLoad(30);
 		
 		// Get e-mail confirmation code from gmail and pass it to the page
-		
+		glc.openNewTab(browserDriver, "https://www.gmail.com");
+		gLogin.logIn(5);
 		gmailPageFactory gpf = new gmailPageFactory(browserDriver);
-		emailConfirmationTextBox.sendKeys(gpf.getPinFromMailSubject());
+		String pin = gpf.getPinFromMailSubject();
+		emailConfirmationTextBox.sendKeys(pin);
 		eMailAgreeAndContinueBtn.click();
 		waitForPageLoad(30);
 		
