@@ -30,10 +30,10 @@ public class gmailLogInPageFactory {
 		browserDriver = driver;		
 	}
 	
-	public void gmailLogin() throws IOException {
-		emailTextBox.sendKeys(glc.readDataFromExcel(2)[2][2]);
+	public void gmailLogin(int excelRowIndex) throws IOException {
+		emailTextBox.sendKeys(glc.readDataFromExcel(excelRowIndex)[excelRowIndex][2]);
 		userNameNextBtn.click();
-		passwordTextBox.sendKeys(glc.readDataFromExcel(2)[2][3]);
+		passwordTextBox.sendKeys(glc.readDataFromExcel(excelRowIndex)[excelRowIndex][3]);
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
@@ -41,6 +41,5 @@ public class gmailLogInPageFactory {
 			e.printStackTrace();
 		}
 		passwordNextBtn.click();
-	}
-	
-	}
+	}	
+}

@@ -60,7 +60,7 @@ public class forgotPassword {
 	  if (fppf.validateEMailAddress()==false) {
 		glc.openNewTab(browserDriver, "https://www.gmail.com");
 		gmailLogin gLogin = new gmailLogin(browserDriver);
-		gLogin.logIn();
+		gLogin.logIn(4);
 		glc.waitForPageLoad(35, browserDriver);
 		gpf.readMail();
 		rppf.completeResetPassword("P@ssw0rd64");

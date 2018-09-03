@@ -3,11 +3,6 @@
  */
 package LinkedIn;
 
-/**
- * @author Islam Abd Alazez Abd Alhamed
- *
- */
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,11 +10,13 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
+import LinkedIn.gmail.gmailPageFactory;
+
 public class registerPageFactory {
 	
 	JavascriptExecutor js ;
 	Select countryDropdown;
-	Select workIndustryComboBox;
+	Select workIndustryDropDown;
 	
 	WebDriver browserDriver;
 	
@@ -51,7 +48,7 @@ public class registerPageFactory {
 	private WebElement countryComboBox;
 	
 	@FindBy(id="work-industry")
-	private WebElement workIndustry;
+	private WebElement workIndustryComboBox;
 	
 	@FindBy(id="location-postal")
 	private WebElement postalCodeTextBox;
@@ -68,12 +65,34 @@ public class registerPageFactory {
 	@FindBy(xpath = "//*[contains(@class, 'onboarding-widget__cta button-primary-x-large full-width ember-view')]")
 	private WebElement nextBtn;
 
+	@FindBy(xpath = "//*[contains(@class, 'onboarding-email-confirmation__code-input text-align-center   ember-text-field ember-view')]")
+	private WebElement emailConfirmationTextBox;
+	
+	@FindBy(xpath = ".//button[contains(text(),'Agree & Confirm')]")
+	private WebElement eMailAgreeAndContinueBtn;
+	
+	@FindBy(xpath = "//*[contains(@class, 'onboarding-widget__cta onboarding-widget__cta-skip button-tertiary-small-muted mt4 ember-view')]")
+	private WebElement importContactsSkipBtn;
+	
+	@FindBy(xpath = "//*[contains(@class, 'onboarding-abi__hovercard-confirm button-secondary-medium mr1')]")
+	private WebElement ImportContactsPopUpSkipBtn;
+	
+	
+	@FindBy(xpath = "//*[contains(@class, 'onboarding-widget__cta onboarding-widget__cta--tertiary onboarding-combo-bar__skip button-tertiary-small-muted mr4 flex-shrink-zero ember-view')]")
+	private WebElement pepoleYouMayKnowSkipBtn;
+	
+	@FindBy(xpath = "//*[contains(@class, 'onboarding-widget__cta onboarding-photo__skip-button button-tertiary-small-muted mt4 ember-view1')]")
+	private WebElement profilePhotoUploadSkipBtn;
+	
+	@FindBy(xpath = "//*[contains(@class, 'onboarding-widget__cta button-tertiary-small-muted mt4 ember-view')]")
+	private WebElement getTheAppSkipBtn;
+	
 	public  registerPageFactory(WebDriver driver) {
 		PageFactory.initElements(driver, this);
 		js = (JavascriptExecutor) driver;
 		browserDriver = driver;
-		countryDropdown = new Select(countryComboBox);
-		workIndustryComboBox = new Select(workIndustry);
+		
+		
 	}
 	
 	public void successfulRegisteration(String firstName, String lastName, String eMail, String password, String countryName, String postalCode, String jobTitle, String companyName, String workIndustry) {
@@ -91,17 +110,15 @@ public class registerPageFactory {
 		
 		waitForPageLoad(30);
 		
-		// Check if there is a CAPATCHA or security verification wait for 90 seconds to allow the user to submit it manually
-        if((captcha !=null && captcha.isDisplayed()) || (callWindow != null && callWindow.isDisplayed())) 
-        {
-        	try {
-				Thread.sleep(90000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
+		// If there is a CAPATCHA or security verification wait for 90 seconds to allow the user to submit it manually
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
      // The following block of code is used if I Want to change the country
+        countryDropdown = new Select(countryComboBox);
         countryDropdown.selectByVisibleText(countryName);
         postalCodeTextBox.sendKeys(postalCode);
         nextBtn.click();
@@ -109,8 +126,35 @@ public class registerPageFactory {
         
     	jobTitleTextBox.sendKeys(jobTitle);
 		companyTextBox.sendKeys(companyName);
-		workIndustryComboBox.sendKeys(workIndustry);
+		workIndustryDropDown = new Select(workIndustryComboBox);
+		workIndustryDropDown.selectByVisibleText(workIndustry);
 		continuetBtn.click();
+		waitForPageLoad(30);
+		
+		// Get e-mail confirmation code from gmail and pass it to the page
+		
+		gmailPageFactory gpf = new gmailPageFactory(browserDriver);
+		emailConfirmationTextBox.sendKeys(gpf.getPinFromMailSubject());
+		eMailAgreeAndContinueBtn.click();
+		waitForPageLoad(30);
+		
+		importContactsSkipBtn.click();
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ImportContactsPopUpSkipBtn.click();
+		waitForPageLoad(30);
+		
+		pepoleYouMayKnowSkipBtn.click();
+		waitForPageLoad(30);
+		
+		profilePhotoUploadSkipBtn.click();
+		waitForPageLoad(30);
+		
+		getTheAppSkipBtn.click();
 		waitForPageLoad(30);
 	}
 	

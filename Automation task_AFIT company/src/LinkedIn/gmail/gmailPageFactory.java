@@ -31,13 +31,28 @@ public class gmailPageFactory {
 		PageFactory.initElements(driver, this);
 		browserDriver = driver;		
 }
+	
+	public String getPinFromMailSubject() {
+		List<WebElement> email = browserDriver.findElements(By.cssSelector("div.xT>div.y6>span>b"));
+		for(WebElement emailsub : email){
+		    if(emailsub.getText().contains("your pin is")){
+
+		           int pinCharsBeginIndex = emailsub.getText().indexOf(",")+14;
+		           return emailsub.getText().substring(pinCharsBeginIndex, 6);
+		           //break;
+		        }
+		    return null;
+		    }
+		return null;
+	}
+	
 	public void readMail() {
 		
 		// Get unread mails
 		
 		List<WebElement> a = browserDriver.findElements(By.xpath("//*[@class='yW']/span"));
         for (int i = 0; i < a.size(); i++) {
-            if (a.get(i).getText().equals("LinkedIn")) //to click on a specific mail.
+            if (a.get(i).getText().equals("LinkedIn Messages")) //to click on a specific mail.
                 {                                           
                 a.get(i).click();
                 break;

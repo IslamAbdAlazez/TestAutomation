@@ -53,7 +53,7 @@ public class feedPage {
   }    
  
   @AfterClass(enabled = false)
-  public void afterTest () 
+  public void AfterClass () 
   {
 	  browserDriver.quit();
   }

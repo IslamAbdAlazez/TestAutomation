@@ -16,9 +16,9 @@ public class gmailLogin {
 		glpf = new gmailLogInPageFactory(browserDriver);
 	}
 	
-  public void logIn() {
+  public void logIn(int excelRowIndex) {
 	  try {
-		glpf.gmailLogin();
+		glpf.gmailLogin(excelRowIndex);
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
