@@ -31,9 +31,11 @@ public class gmailLogInPageFactory {
 	}
 	
 	public void gmailLogin(int excelRowIndex) throws IOException {
-		emailTextBox.sendKeys(glc.readDataFromExcel(excelRowIndex)[excelRowIndex][2]);
+		String [][] userData;
+		userData = glc.readDataFromExcel(excelRowIndex);
+		emailTextBox.sendKeys(userData[0][2]);
 		userNameNextBtn.click();
-		passwordTextBox.sendKeys(glc.readDataFromExcel(excelRowIndex)[excelRowIndex][3]);
+		passwordTextBox.sendKeys(userData[0][3]);
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {

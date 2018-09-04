@@ -33,12 +33,12 @@ public class gmailPageFactory {
 }
 	
 	public String getPinFromMailSubject() {
-		List<WebElement> email = browserDriver.findElements(By.xpath("//*[@class='yW']/span"));
+		List<WebElement> email = browserDriver.findElements(By.cssSelector("div.xT>div.y6>span>b"));
 		for(WebElement emailsub : email){
 		    if(emailsub.getText().contains("your pin is")){
 
 		           int pinCharsBeginIndex = emailsub.getText().indexOf(",")+14;
-		           return emailsub.getText().substring(pinCharsBeginIndex, 6);
+		           return emailsub.getText().substring(pinCharsBeginIndex, 25);
 		           //break;
 		        }
 		    return null;

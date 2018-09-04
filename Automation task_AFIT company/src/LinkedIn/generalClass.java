@@ -79,7 +79,7 @@ public String[][] readDataFromExcel(int desiredRowZeroBasedNum) throws IOExcepti
 	}
 	public void openNewTab(WebDriver driver, String URL) {
 		
-		((JavascriptExecutor)driver).executeScript("window.open()");
+		((JavascriptExecutor)driver).executeScript("window.open('about:blank', '-blank')");
 		ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
 		driver.switchTo().window(tabs.get(1));
 		driver.get(URL);

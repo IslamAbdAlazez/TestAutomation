@@ -3,6 +3,7 @@
  */
 package LinkedIn;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -79,8 +80,7 @@ public class registerPageFactory {
 	private WebElement importContactsSkipBtn;
 	
 	@FindBy(xpath = "//*[contains(@class, 'onboarding-abi__hovercard-confirm button-secondary-medium mr1')]")
-	private WebElement ImportContactsPopUpSkipBtn;
-	
+	private WebElement ImportContactsPopUpSkipBtn;	
 	
 	@FindBy(xpath = "//*[contains(@class, 'onboarding-widget__cta onboarding-widget__cta--tertiary onboarding-combo-bar__skip button-tertiary-small-muted mr4 flex-shrink-zero ember-view')]")
 	private WebElement pepoleYouMayKnowSkipBtn;
@@ -129,24 +129,28 @@ public class registerPageFactory {
         waitForPageLoad(30);
         
     	jobTitleTextBox.sendKeys(jobTitle);
-    	companyTextBox.sendKeys(companyName);
-    	companyTextBox.sendKeys(Keys.ENTER);
-    	
-    	try {
+    	companyTextBox.sendKeys(companyName+Keys.ENTER);
+    	//companyTextBox.sendKeys(Keys.ENTER);
+    	boolean workIndustryComboBoxExists = browserDriver.findElements( By.id("work-industry") ).size() != 0;
+    	if (workIndustryComboBoxExists) {
     		workIndustryDropDown = new Select(workIndustryComboBox);
     		workIndustryDropDown.selectByVisibleText(workIndustry);
+		}
+    	/*try {
+    		
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
     	finally {
-    		continuetBtn.click();
-		}
-    	
+    		
+		}*/
+    	continuetBtn.click();
 		waitForPageLoad(30);
 		
 		// Get e-mail confirmation code from gmail and pass it to the page
 		glc.openNewTab(browserDriver, "https://www.gmail.com");
 		gLogin.logIn(5);
+		glc.waitForPageLoad(30, browserDriver);
 		gmailPageFactory gpf = new gmailPageFactory(browserDriver);
 		String pin = gpf.getPinFromMailSubject();
 		emailConfirmationTextBox.sendKeys(pin);
