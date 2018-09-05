@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
-  <test name="Default test(failed)">
+  <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="LinkedIn.registerNewUser">
+      <class name="LinkedIn.profileEdit">
         <methods>
-          <include name="AfterClass"/>
-          <include name="successfulRegisteration"/>
-          <include name="beforeClass"/>
+          <include name="addBackgroundProfileSection"/>
+          <include name="addIntroProfileSection" invocation-numbers="0"/>
+          <include name="BeforeClass"/>
+          <include name="afterTest"/>
+          <include name="getValidUserCredentials"/>
         </methods>
-      </class> <!-- LinkedIn.registerNewUser -->
+      </class> <!-- LinkedIn.profileEdit -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

@@ -34,6 +34,9 @@ public class profileEditPageFactory {
 	@FindBy(id = "skills-drawer")
 	private WebElement skillsHeader;
 	
+	@FindBy(id = "accomplishments-drawer")
+	private WebElement accomplishmentsHeader;
+	
 	@FindBy(xpath = "/html/body/div[5]/div[6]/div[3]/div/div/div/div/div[2]/div[1]/div[2]/section/div[3]/div[1]/div[2]/section/ul/section[1]/ul/li[1]/div[1]/span[2]")
 	private WebElement profilePhotoAddButton;
 	
@@ -60,6 +63,45 @@ public class profileEditPageFactory {
 	
 	@FindBy(xpath = "/html/body/div[5]/div[6]/div[3]/div/div/div/div/div[2]/div[1]/div[2]/section/div[3]/div[1]/div[2]/section/ul/section[2]/ul/li[3]/a/div/span[2]")
 	private WebElement volunteerExperienceAddButton;
+	
+	@FindBy(xpath = "/html/body/div[5]/div[6]/div[3]/div/div/div/div/div[2]/div[1]/div[2]/section/div[3]/div[1]/div[2]/section/ul/section[4]/ul/li[1]/a/div/span[2]")
+	private WebElement publicationsAddButton;
+	
+	@FindBy(xpath = "/html/body/div[5]/div[6]/div[3]/div/div/div/div/div[2]/div[1]/div[2]/section/div[3]/div[1]/div[2]/section/ul/section[4]/ul/li[2]/a/div/span[2]")
+	private WebElement certificationsAddButton;
+	
+	@FindBy(xpath = "/html/body/div[5]/div[6]/div[3]/div/div/div/div/div[2]/div[1]/div[2]/section/div[3]/div[1]/div[2]/section/ul/section[4]/ul/li[3]/a/div/span[2]")
+	private WebElement patentsAddButton;
+	
+	@FindBy(xpath = "/html/body/div[5]/div[6]/div[3]/div/div/div/div/div[2]/div[1]/div[2]/section/div[3]/div[1]/div[2]/section/ul/section[4]/ul/li[4]/a/div/span[2]")
+	private WebElement coursesAddButton;
+	
+	@FindBy(xpath = "/html/body/div[5]/div[6]/div[3]/div/div/div/div/div[2]/div[1]/div[2]/section/div[3]/div[1]/div[2]/section/ul/section[4]/ul/li[5]/a/div/span[2]")
+	private WebElement projectsAddButton;
+	
+	@FindBy(xpath = "/html/body/div[5]/div[6]/div[3]/div/div/div/div/div[2]/div[1]/div[2]/section/div[3]/div[1]/div[2]/section/ul/section[4]/ul/li[6]/a/div/span[2]")
+	private WebElement honorAndAwardsAddButton;
+	
+	@FindBy(xpath = "/html/body/div[5]/div[6]/div[3]/div/div/div/div/div[2]/div[1]/div[2]/section/div[3]/div[1]/div[2]/section/ul/section[4]/ul/li[7]/a/div/span[2]")
+	private WebElement testScoresAddButton;
+	
+	@FindBy(xpath = "/html/body/div[5]/div[6]/div[3]/div/div/div/div/div[2]/div[1]/div[2]/section/div[3]/div[1]/div[2]/section/ul/section[4]/ul/li[8]/a/div/span[2]")
+	private WebElement languagesAddButton;
+	
+	@FindBy(xpath = "/html/body/div[5]/div[6]/div[3]/div/div/div/div/div[2]/div[1]/div[2]/section/div[3]/div[1]/div[2]/section/ul/section[4]/ul/li[9]/a/div/span[2]")
+	private WebElement organizationsAddButton;
+	
+	@FindBy(id = "additional-information-drawer")
+	private WebElement additionalInformationHeader;
+	
+	@FindBy(xpath = "/html/body/div[5]/div[6]/div[3]/div/div/div/div/div[2]/div[1]/div[2]/section/div[3]/div[1]/div[2]/section/ul/section[5]/ul/li/a/div/span[2]")
+	private WebElement requestRecomendationAddButton;
+	
+	@FindBy(id = "languages-drawer")
+	private WebElement supportedLanguagesHeader;
+	
+	@FindBy(xpath = "/html/body/div[5]/div[6]/div[3]/div/div/div/div/div[2]/div[1]/div[2]/section/div[3]/div[1]/div[2]/section/ul/section[6]/ul/li/a/div/span[2]")
+	private WebElement supportedLanguagesAddButton;
 	
 	@FindBy(id = "position-title-typeahead")
 	private WebElement positionTitleTextBox;
@@ -139,12 +181,11 @@ public class profileEditPageFactory {
 	@FindBy(xpath = "/html/body/div[5]/div[6]/div/div[1]/div/div/form/div/footer/div[2]/button")
 	private WebElement saveVolunteerButton;
 	
-	@FindBy(xpath = "/html/body/div[1]/artdeco-modal-overlay/artdeco-modal/artdeco-modal-content/div/ul")
+	@FindBy(className = "pv-add-with-suggestions__suggested-skills-list")
 	private WebElement skillsArea;
 	//
 	@FindAll({@FindBy(xpath = "//*[contains(@class, '" + "button-primary-medium ml2 fr ember-view" + "')]")})
-	private List<WebElement> saveSkillsButton;
-	
+	private List<WebElement> saveSkillsButton;	
 	
 	@FindBy (xpath = "/html/body/div[5]/div[6]/div[3]/div/div/div/div/div[2]/div[1]/div[5]/div[2]/span/section/div[1]/section/ul/li[2]/div/li/a/div/div[2]/h3/span[2]")
 	public WebElement companyNameSpan;
@@ -248,6 +289,15 @@ public class profileEditPageFactory {
 		volunteerDescriptionTextBox.sendKeys("This is a demo volunteer description");
 		saveVolunteerButton.click();		
 	}	
+	
+	public void addAcomplishmentsProfileSection(WebDriver driver) {
+		Actions actions = new Actions(driver);
+		actions.moveToElement(profileStrength);
+		actions.perform();
+		addProfileSectionBtn.click();
+		accomplishmentsHeader.click();
+	}
+	
 public void addSkillsProfileSection(WebDriver driver) {
 	
 	Actions actions = new Actions(driver);

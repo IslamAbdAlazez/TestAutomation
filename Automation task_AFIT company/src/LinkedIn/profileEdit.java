@@ -18,6 +18,7 @@ public class profileEdit {
 	feedPage fp;
 	logIn signIn;
 	generalClass glc = new generalClass();
+	String [][] userData;
 	
 	 @BeforeClass	 
 	  public void BeforeClass() {
@@ -36,11 +37,11 @@ public class profileEdit {
      @DataProvider(name="validUserData")
 	  public String[][] getValidUserCredentials() throws IOException 
 	  {	
-			String [][] excelRow = new String[][] { glc.readDataFromExcel(1)[1]};
-			String [][] returnedArray = new String[1][2];
-			returnedArray[0][0] = excelRow[0][2].toString();
-			returnedArray[0][1] = excelRow[0][3].toString(); 	
-			return returnedArray;
+			userData = glc.readDataFromExcel(1);
+			String [][] emailAndPassword = new String[1][2];
+			emailAndPassword[0][0] = userData[0][2].toString();
+			emailAndPassword[0][1] = userData[0][3].toString(); 	
+			return emailAndPassword;
 	  }
 	 
 	 // Added this constructor for cases that call this class without WebDriver
@@ -79,7 +80,7 @@ public class profileEdit {
 	  glc.waitForPageLoad(30, browserDriver);
   }
   
-  @AfterClass ()
+  @AfterClass (enabled = false)
   public void afterTest () 
   {
 	  browserDriver.quit();

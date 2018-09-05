@@ -18,6 +18,7 @@ public class logIn {
 	WebDriver browserDriver ;
 	logInPageFactory lpf;
 	generalClass glc = new generalClass();
+	String [][] userData;
 	
 	 @BeforeClass	 
 	  public void BeforeClass() {
@@ -44,14 +45,6 @@ public class logIn {
 	 public  logIn(WebDriver driver) {
 		browserDriver = driver;
 		lpf = new logInPageFactory(browserDriver);
-		
-		// Getting email and password in the constructor for the case of another class calling this class
-		try {
-			getValidUserCredentials();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		}
 	 
   // This method is used to get specific data from the excel row returned from LinkedIn.generalClass.readDataFromExcel(int) method	
@@ -60,12 +53,11 @@ public class logIn {
 	@DataProvider(name="validUserData")
   public String[][] getValidUserCredentials() throws IOException 
   {	
-		String [][] excelRow = new String[][] { glc.readDataFromExcel(1)[1]};
-		String [][] returnedArray = new String[1][2];
-		returnedArray[0][0] = excelRow[0][2].toString();
-		returnedArray[0][1] = excelRow[0][3].toString(); 	
-		return returnedArray;
-  }
+		userData = glc.readDataFromExcel(1);
+		String [][] emailAndPassword = new String[1][2];
+		emailAndPassword[0][0] = userData[0][2].toString();
+		emailAndPassword[0][1] = userData[0][3].toString(); 	
+		return emailAndPassword;  }
   
 	@BeforeTest ()
 	@DataProvider(name="inValidUserData")
