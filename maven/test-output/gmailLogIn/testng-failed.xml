@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [gmailLogIn]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="com.google.login(failed)">
+    <groups>
+      <run>
+        <include name="validLogIn"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="com.linkedIn.maven.logIn">
+        <methods>
+          <include name="successfulUserLogIn" invocation-numbers="0"/>
+        </methods>
+      </class> <!-- com.linkedIn.maven.logIn -->
+    </classes>
+  </test> <!-- com.google.login(failed) -->
+</suite> <!-- Failed suite [gmailLogIn] -->
