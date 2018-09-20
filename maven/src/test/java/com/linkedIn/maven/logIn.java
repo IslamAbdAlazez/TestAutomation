@@ -91,7 +91,7 @@ public class logIn {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		lpf.signInUser(eMail+"x", password);
+		lpf.signInUser(eMail, password);
 		assertEquals(browserDriver.getTitle(), "LinkedIn","LinkedIn home page is not displayed");
 	}
 
