@@ -5,10 +5,11 @@
     <classes>
       <class name="com.linkedIn.maven.logIn">
         <methods>
-          <include name="successfulUserLogIn" invocation-numbers="0"/>
+          <include name="successfulUserLogIn"/>
           <include name="BeforeClass"/>
           <include name="getValidUserCredentials"/>
           <include name="TakeScreenShot"/>
+          <include name="notSuccessfulUserLogIn" invocation-numbers="0"/>
           <include name="afterTest"/>
         </methods>
       </class> <!-- com.linkedIn.maven.logIn -->
