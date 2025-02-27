@@ -1,0 +1,47 @@
+name: launch CodeReviewGen
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+
+jobs:
+  send-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send PR and Config Data
+        env:
+          GITHUB_API_TOKEN: ${{ secrets.GH_API_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ACCESS_CODE: ${{ secrets.ACCESS_CODE }}
+          MODEL_SYSTEM_MESSAGE: ${{ vars.MODEL_SYSTEM_MESSAGE }}
+          MODEL_NAME: ${{ vars.MODEL_NAME }}
+          MAX_RETRIES: ${{ vars.MAX_RETRIES }}
+          CUSTOMER_EMAIL: ${{ vars.CUSTOMER_EMAIL}}
+          MODEL_PROMPT: ${{vars.MODEL_PROMPT}}
+        run: |
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          REPO_FULL_NAME="${{ github.event.pull_request.head.repo.full_name }}"
+          REPO_OWNER=$(echo "$REPO_FULL_NAME" | cut -d'/' -f1)
+          REPO_NAME=$(echo "$REPO_FULL_NAME" | cut -d'/' -f2)
+
+          cat <<EOF > payload.json
+          {
+            "source": "workflow",
+            "access_code": "$ACCESS_CODE",
+            "repository_owner": "$REPO_OWNER",
+            "repository_name": "$REPO_NAME",
+            "pr_number": "$PR_NUMBER",
+            "GITHUB_API_TOKEN": "$GITHUB_API_TOKEN",
+            "OPENAI_API_KEY": "$OPENAI_API_KEY",
+            "MODEL_SYSTEM_MESSAGE": "$MODEL_SYSTEM_MESSAGE",
+            "MODEL_NAME": "$MODEL_NAME",
+            "MAX_RETRIES": "$MAX_RETRIES",
+            "CUSTOMER_EMAIL": "$CUSTOMER_EMAIL",
+            "MODEL_PROMPT": "$MODEL_PROMPT"
+          }
+          EOF
+
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d @payload.json \
+             https://codereviewgen.mindcircuits.ai/workflows
