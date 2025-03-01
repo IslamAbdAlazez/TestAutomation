@@ -1,51 +1,55 @@
-1| name: launch CodeReviewGen
-2| 
-3| on:
-4|   pull_request_target:
-5|     types: [opened, synchronize]
-6| 
-7| jobs:
-8|   send-data:
-9|     runs-on: ubuntu-latest
-10|     steps:
-11|       - name: Send PR and Config Data
-12|         env:
-13|           GITHUB_API_TOKEN: ${{ secrets.GH_API_TOKEN }}
-14|           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-15|           ACCESS_CODE: ${{ secrets.ACCESS_CODE }}
-16|           MODEL_SYSTEM_MESSAGE: ${{ vars.MODEL_SYSTEM_MESSAGE }}
-17|           MODEL_NAME: ${{ vars.MODEL_NAME }}
-18|           MAX_RETRIES: ${{ vars.MAX_RETRIES }}
-19|           CUSTOMER_EMAIL: ${{ vars.CUSTOMER_EMAIL}}
-20|           MODEL_PROMPT: ${{vars.MODEL_PROMPT}}
-21|         run: |
-22|           PR_NUMBER="${{ github.event.pull_request.number }}"
-23|           REPO_FULL_NAME="${{ github.event.pull_request.head.repo.full_name }}"
-24|           REPO_OWNER=$(echo "$REPO_FULL_NAME" | cut -d'/' -f1)
-25|           REPO_NAME=$(echo "$REPO_FULL_NAME" | cut -d'/' -f2)
-26| 
-27|           cat <<EOF > payload.json
-28|           {
-29|             "source": "workflow",
-30|             "access_code": "$ACCESS_CODE",
-31|             "repository_owner": "$REPO_OWNER",
-32|             "repository_name": "$REPO_NAME",
-33|             "pr_number": "$PR_NUMBER",
-34|             "GITHUB_API_TOKEN": "$GITHUB_API_TOKEN",
-35|             "OPENAI_API_KEY": "$OPENAI_API_KEY",
-36|             "MODEL_SYSTEM_MESSAGE": "$MODEL_SYSTEM_MESSAGE",
-37|             "MODEL_NAME": "$MODEL_NAME",
-38|             "MAX_RETRIES": "$MAX_RETRIES",
-39|             "CUSTOMER_EMAIL": "$CUSTOMER_EMAIL",
-40|             "MODEL_PROMPT": "$MODEL_PROMPT"
-41|           }
-42|           EOF
-43| 
-44|           RESPONSE=$(curl -X POST -H "Content-Type: application/json" -d @payload.json https://codereviewgen.mindcircuits.ai/workflows)
-45|           echo "Response: $RESPONSE"
-46|           if echo "$RESPONSE" | grep -q "success"; then
-47|             echo "Request completed successfully."
-48|           else
-49|             echo "Request failed."
-50|             exit 1
-51|           fi
+name: launch CodeReviewGen
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+
+jobs:
+  send-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send PR and Config Data
+        env:
+          GITHUB_API_TOKEN: ${{ secrets.GH_API_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ACCESS_CODE: ${{ secrets.ACCESS_CODE }}
+          MODEL_SYSTEM_MESSAGE: ${{ vars.MODEL_SYSTEM_MESSAGE }}
+          MODEL_NAME: ${{ vars.MODEL_NAME }}
+          MAX_RETRIES: ${{ vars.MAX_RETRIES }}
+          CUSTOMER_EMAIL: ${{ vars.CUSTOMER_EMAIL}}
+          MODEL_PROMPT: ${{ vars.MODEL_PROMPT }}
+        run: |
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          REPO_FULL_NAME="${{ github.event.pull_request.head.repo.full_name }}"
+          REPO_OWNER=$(echo "$REPO_FULL_NAME" | cut -d'/' -f1)
+          REPO_NAME=$(echo "$REPO_FULL_NAME" | cut -d'/' -f2)
+
+          cat <<EOF > payload.json
+          {
+            "source": "workflow",
+            "access_code": "$ACCESS_CODE",
+            "repository_owner": "$REPO_OWNER",
+            "repository_name": "$REPO_NAME",
+            "pr_number": "$PR_NUMBER",
+            "GITHUB_API_TOKEN": "$GITHUB_API_TOKEN",
+            "OPENAI_API_KEY": "$OPENAI_API_KEY",
+            "MODEL_SYSTEM_MESSAGE": "$MODEL_SYSTEM_MESSAGE",
+            "MODEL_NAME": "$MODEL_NAME",
+            "MAX_RETRIES": "$MAX_RETRIES",
+            "CUSTOMER_EMAIL": "$CUSTOMER_EMAIL",
+            "MODEL_PROMPT": "$MODEL_PROMPT"
+          }
+          EOF
+
+          RESPONSE=$(curl -X POST \
+            -H "Content-Type: application/json" \
+            -d @payload.json \
+            https://codereviewgen.mindcircuits.ai/workflows)
+
+          echo "Server response: $RESPONSE"
+
+      - name: Wait for Check Completion
+        uses: actions/wait-for-check@v1
+        with:
+          check-name: 'Send PR and Config Data'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
