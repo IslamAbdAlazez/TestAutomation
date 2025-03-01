@@ -41,7 +41,10 @@ jobs:
           }
           EOF
 
-          RESPONSE=$(curl -X POST \
+          echo "Payload:"
+          cat payload.json
+
+          RESPONSE=$(curl -v -X POST \
             -H "Content-Type: application/json" \
             -d @payload.json \
             https://codereviewgen.mindcircuits.ai/workflows)
@@ -49,7 +52,7 @@ jobs:
           echo "Server response: $RESPONSE"
 
       - name: Wait for Check Completion
-        uses: actions/wait-for-check@v1
+        uses: actions/wait-for-check@v1.0.0
         with:
           check-name: 'Send PR and Config Data'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
