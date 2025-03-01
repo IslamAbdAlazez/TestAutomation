@@ -19,9 +19,10 @@ public class addItems {
 	
 	public void setSender(String mainCorpName,String subCorpName) 
 	{
+		string x = 1;
 		WebElement mainCrp = browserDriver.findElement(By.id("select2-mainCorporateCustomers-container"));
 		//Select dropdown = new Select(mainCrp);
-		//dropdown.selectByVisibleText("Ê“«—… «·⁄„·");
+		//dropdown.selectByVisibleText("√¶√í√á√ë√â √á√°√ö√£√°");
 		mainCrp.click();
 		//browserDriver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
 		WebElement gehaMainText = browserDriver.findElement(By.className("select2-search__field"));
@@ -44,10 +45,10 @@ public class addItems {
 		WebElement gehaSubText = browserDriver.findElement(By.className("select2-search__field"));
 		gehaSubText.sendKeys(subCorpName);
 		gehaSubText.sendKeys(Keys.ENTER);
-		//WebElement gehaMain = browserDriver.findElement(By.xpath("//li[contains(.,'««·ﬂ·Ì… «· ﬁ‰ÌÂ »⁄‰Ì“…')]"));/*.findElement(By.id("select2-mainCorporateCustomers-container"));*/ 
+		//WebElement gehaMain = browserDriver.findElement(By.xpath("//li[contains(.,'√á√á√°√ü√°√≠√â √á√°√ä√û√§√≠√• √à√ö√§√≠√í√â')]"));/*.findElement(By.id("select2-mainCorporateCustomers-container"));*/ 
 		//gehaMain.click();
 		/*for (WebElement option : options) {
-			if (option.getText().equalsIgnoreCase("Ê“«—… «·⁄„·")) {
+			if (option.getText().equalsIgnoreCase("√¶√í√á√ë√â √á√°√ö√£√°")) {
 				option.click();
 			}
 		}*/		
@@ -82,7 +83,7 @@ public class addItems {
 			itemDescTextBox.sendKeys(currentRow.getCell(4).getStringCellValue().trim());
 			itemDescTextBox = null;
 		}			
-		if (currentRow.getCell(5).getStringCellValue().trim().equals("œ«Œ·Ì")) 
+		if (currentRow.getCell(5).getStringCellValue().trim().equals("√è√á√é√°√≠")) 
 		{
 			inputInternal.click();
 		}
@@ -118,7 +119,7 @@ public class addItems {
 		WebElement mainCrp = browserDriver.findElement(By.xpath("/html/body/div[6]/div[2]/div[1]/div[2]/div/div[1]/span[1]/span[1]/span/span[1]/span"));
 		// Check if sender can be selected
 		//String title = mainCrp.getAttribute("title");
-		if (mainCrp.isEnabled() /*title.contains("«œŒ·")*/) {
+		if (mainCrp.isEnabled() /*title.contains("√á√è√é√°")*/) {
 			return true;
 		}
 		else {
@@ -132,7 +133,7 @@ public class addItems {
 		for (int i = 0; i < itemsNos.length; i++) {
 			try {
 				currentExcelRow = genCls.readExcelRow("E:\\Selenium\\ItemsData.xltm", 0, itemsNos[i]);
-				genCls.bringTableRow("ItemsDataTable", currentExcelRow.get(0).toString()).findElement(By.cssSelector("button[data-original-title=' ⁄œÌ·']")).click();
+				genCls.bringTableRow("ItemsDataTable", currentExcelRow.get(0).toString()).findElement(By.cssSelector("button[data-original-title='√ä√ö√è√≠√°']")).click();
 				Thread.sleep(1000);
 				WebElement itemTypeCombo = browserDriver.findElement(By.cssSelector("span[aria-labelledby='select2-editItemTypes-container']"));
 				itemTypeCombo.click();
@@ -164,9 +165,9 @@ public class addItems {
 		browserDriver= genCls.main(browserName);
 		genCls.invokeBrowser();
 		genCls.login("mrowily","P@ssw0rd");
-		genCls.openPage("«·⁄„·Ì«  «·»—ÌœÌ…, ”ÃÌ· «·»⁄«∆À"," ”ÃÌ· »⁄ÌÀ…");
+		genCls.openPage("√á√°√ö√£√°√≠√á√ä √á√°√à√ë√≠√è√≠√â,√ä√ì√å√≠√° √á√°√à√ö√á√Ü√ã","√ä√ì√å√≠√° √à√ö√≠√ã√â");
 		if(regItemObj.checkSenderStsatus()) {
-			regItemObj.setSender("Ê“«—… «·⁄„·", "œÌÊ«‰ Ê“«—… «·⁄„·");
+			regItemObj.setSender("√¶√í√á√ë√â √á√°√ö√£√°", "√è√≠√¶√á√§ √¶√í√á√ë√â √á√°√ö√£√°");
 		}
 		try {
 			regItemObj.setItemDetails(1,10);
