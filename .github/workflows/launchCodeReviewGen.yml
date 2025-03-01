@@ -57,7 +57,7 @@ jobs:
           while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
             STATUS=$(curl -s -H "Content-Type: application/json" \
               -H "Authorization: Bearer $GITHUB_API_TOKEN" \
-              https://codereviewgen.mindcircuits.ai/workflows/status)
+              https://codereviewgen.mindcircuits.ai/workflows)
 
             echo "Check status: $STATUS"
 
