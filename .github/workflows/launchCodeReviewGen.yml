@@ -51,27 +51,7 @@ jobs:
 
           echo "Server response: $RESPONSE"
 
-          # Polling loop to wait for the server response
-          MAX_ATTEMPTS=10
-          ATTEMPT=0
-          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
-            STATUS=$(curl -s -H "Content-Type: application/json" \
-              -H "Authorization: Bearer $GITHUB_API_TOKEN" \
-              https://codereviewgen.mindcircuits.ai/workflows)
-
-            echo "Check status: $STATUS"
-
-            if [ "$STATUS" == "completed" ]; then
-              echo "Check completed."
-              break
-            fi
-
-            ATTEMPT=$((ATTEMPT + 1))
-            echo "Attempt $ATTEMPT/$MAX_ATTEMPTS: Waiting for 30 seconds before retrying..."
-            sleep 30
-          done
-
-          if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
-            echo "Max attempts reached. Exiting with error."
+          if [ "$RESPONSE" != "Configuration and PR data processed successfully" ]; then
+            echo "Error: Unexpected response from server"
             exit 1
           fi
