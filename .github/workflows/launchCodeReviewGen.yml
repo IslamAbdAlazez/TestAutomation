@@ -52,7 +52,6 @@ jobs:
           echo "Server response: $RESPONSE"
 
       - name: Wait for Check Completion
-        uses: actions/wait-for-check@v1.0.0
+        uses: actions/wait@v2
         with:
-          check-name: 'Send PR and Config Data'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          timeout: 300
